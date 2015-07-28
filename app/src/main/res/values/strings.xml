@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Förskolan</string>
 
+    <!-- NAVIGATION DRAWER -->
     <string name="title_section1">Hem</string>
     <string name="title_section2">Tider</string>
     <string name="title_section3">Sjukanmälan</string>
@@ -11,4 +12,19 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- TIMEFRAGMENT-->
+
+    <string name="default_time_msg">Ange tid genom att klicka här</string>
+    <string name="btn_confirm">Bekräfta tider</string>
+
+    <!--Listview-->
+    <array name="Days">
+        <item>Måndag</item>
+        <item>Tisdag</item>
+        <item>Onsdag</item>
+        <item>Torsdag</item>
+        <item>Fredag</item>
+    </array>
+
 </resources>

@@ -1,33 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_background">
+
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:textColor="@color/icons"
+        android:background="@color/primary"
         android:text="Dag"
-        android:textSize="12dp"
+        android:textSize="25dp"
         android:id="@+id/tv_day" />
 
     <LinearLayout
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_weight="0.7"
+        android:layout_marginLeft="20dp"
         android:layout_height="wrap_content">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lämna"
-            android:id="@+id/tv_leave"
+            android:textColor="@color/accent"
+            android:textSize="35dp"
+            android:text="07:00 - "
+            android:id="@+id/tv_time"
             android:layout_gravity="center_horizontal" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hämta"
-            android:id="@+id/tv_get"
+            android:textColor="@color/accent"
+            android:textSize="35dp"
+            android:text=" 16:00"
+            android:id="@+id/tv_time2"
             android:layout_gravity="center_horizontal" />
+
+</LinearLayout>
+    <!--android:layout_marginBottom="-50dip"-->
+    <!-- TOOLBAR -->
+    <LinearLayout android:id="@+id/toolbar"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_height="50dip"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+       >
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="top">
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:background="@color/primary_light"
+                android:text="-"
+                android:layout_margin="3dp"
+                android:id="@+id/button5" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:background="@color/primary_light"
+                android:text="+"
+                android:layout_margin="3dp"
+                android:id="@+id/button6" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:background="@color/primary_light"
+                android:text="-"
+                android:layout_margin="3dp"
+                android:id="@+id/button7" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:background="@color/primary_light"
+                android:text="+"
+                android:layout_margin="3dp"
+                android:id="@+id/button8" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bekräfta"
+                android:layout_margin="15dp"
+                android:focusable="false"
+                android:textColor="@color/primary_dark_material_dark"
+                android:id="@+id/cb_confirm"
+                android:checked="false" />
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </LinearLayout>

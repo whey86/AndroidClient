@@ -1,6 +1,8 @@
 package com.example.erik.myapplication;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ResourceCursorTreeAdapter;
 import android.widget.TextView;
 
 
@@ -27,7 +30,6 @@ public class MainActivity extends ActionBarActivity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -43,21 +45,22 @@ public class MainActivity extends ActionBarActivity
 
         //Actionbar title
         mTitle = getTitle();
-
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 //Navigation drawer reference XML
                 R.id.navigation_drawer,
                 //Navigation drawer layout
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-    }
+        Resources res = getResources();
+        ColorDrawable cd = new ColorDrawable(res.getColor(R.color.primary_dark));
+        getSupportActionBar().setBackgroundDrawable(cd);
 
+
+    }
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-
         //Get fragment
         Fragment f = FragmentHandler.getFragment(position);
-
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -65,9 +68,7 @@ public class MainActivity extends ActionBarActivity
                     .commit();
 
         onSectionAttached(position);
-
     }
-
     public void onSectionAttached(int number) {
         switch (number) {
             case 0:
