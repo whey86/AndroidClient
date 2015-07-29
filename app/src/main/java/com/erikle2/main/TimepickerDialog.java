@@ -1,4 +1,4 @@
-package com.example.erik.myapplication;
+package com.erikle2.main;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

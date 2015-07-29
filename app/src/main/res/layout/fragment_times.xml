@@ -20,7 +20,7 @@
             android:layout_margin="15dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Vecka X"
-            android:id="@+id/textView" />
+            android:id="@+id/tv_frag_title" />
 
 
     </LinearLayout>

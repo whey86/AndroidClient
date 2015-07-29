@@ -1,4 +1,4 @@
-package com.example.erik.myapplication;
+package com.erikle2.main;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,42 +23,52 @@ public class TimesFragment extends android.support.v4.app.Fragment {
     Button btnPrevious;
     Button btnNext;
     ListView listViewTimes;
-
+    JSONObject theWeek;
     private int lastClick = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //If no saved instance create new view
         if(savedInstanceState == null){
-
-
-
             LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_times,container,false);
 
 //            btnPrevious = (Button)v.findViewById(R.id.btnPrevious);
 //            btnNext = (Button)v.findViewById(R.id.btnNext);
 
+            TextView weekTitle = (TextView) v.findViewById(R.id.tv_frag_title);
+            theWeek = getTimes();
+            try {
+                String week = theWeek.getString("weeknr");
+                weekTitle.setText("Vecka " + week);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             listViewTimes = (ListView) v.findViewById(R.id.lv_times);
 
-            TimeListAdapter adapter = new TimeListAdapter(getActivity().getApplicationContext(), getActivity().getFragmentManager(),getTimes());
+            TimeListAdapter adapter = new TimeListAdapter(getActivity().getApplicationContext(), getActivity().getFragmentManager(),theWeek);
             listViewTimes.setAdapter(adapter);
 
             //ListItem is clicked
             listViewTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                    Log.e("Last click", "" + lastClick);
                     int preClick = lastClick;
                     lastClick =position;
 
                     if(preClick != -1){
                         Log.e("Previous click", "" + preClick);
+
                         View preView =  parent.getAdapter().getView(preClick,null,parent);
+                        TextView title = (TextView)preView.findViewById(R.id.tv_day);
+                        String sTitle = (String)title.getText();
+                        Log.e("preView title",""+ sTitle);
                         View preToolbar = preView.findViewById(R.id.toolbar);
 
                         // Creating the expand animation for the item
-                        ExpandAnimation   preExpand = new ExpandAnimation(preToolbar, 500);
-
+                        ExpandAnimation preExpand = new ExpandAnimation(preToolbar, 500,1);
                         // Start the animation on the toolbar
                         preToolbar.startAnimation(preExpand);
                     }
@@ -67,7 +77,7 @@ public class TimesFragment extends android.support.v4.app.Fragment {
                     View toolbar = view.findViewById(R.id.toolbar);
 
                         // Creating the expand animation for the item
-                    ExpandAnimation   curExpand = new ExpandAnimation(toolbar, 500);
+                    ExpandAnimation curExpand = new ExpandAnimation(toolbar, 500,0);
 
                     // Start the animation on the toolbar
                     toolbar.startAnimation(curExpand);
@@ -111,6 +121,7 @@ public class TimesFragment extends android.support.v4.app.Fragment {
         }
         JSONObject mainObj = new JSONObject();
         try{
+            mainObj.put("weeknr",31);
             mainObj.put("week", week);
         }catch(JSONException e){
             e.printStackTrace();

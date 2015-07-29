@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/accent"
+            android:textColor="@color/unchecked"
             android:textSize="35dp"
             android:text="07:00 - "
             android:id="@+id/tv_time"
@@ -33,13 +33,29 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/accent"
+            android:textColor="@color/unchecked"
             android:textSize="35dp"
             android:text=" 16:00"
             android:id="@+id/tv_time2"
             android:layout_gravity="center_horizontal" />
 
-</LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:button="@drawable/checkbox_background"
+                android:focusable="false"
+                android:id="@+id/cb_confirm"
+                android:checked="false" />
+        </LinearLayout>
+
+    </LinearLayout>
     <!--android:layout_marginBottom="-50dip"-->
     <!-- TOOLBAR -->
     <LinearLayout android:id="@+id/toolbar"
@@ -100,15 +116,7 @@
                 android:layout_margin="3dp"
                 android:id="@+id/button8" />
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bekräfta"
-                android:layout_margin="15dp"
-                android:focusable="false"
-                android:textColor="@color/primary_dark_material_dark"
-                android:id="@+id/cb_confirm"
-                android:checked="false" />
+
 
         </LinearLayout>
 

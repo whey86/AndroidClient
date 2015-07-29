@@ -1,8 +1,7 @@
-package com.example.erik.myapplication;
+package com.erikle2.main;
 
 import android.app.FragmentManager;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,9 @@ public class TimeListAdapter extends ArrayAdapter<String> {
         this.fm = fm;
         this.values = context.getResources().getStringArray(R.array.Days);
         this.times = times;
+
     }
+
 
     @Override
     public View getView(final int position, View convertView,  final ViewGroup parent) {
@@ -44,11 +45,13 @@ public class TimeListAdapter extends ArrayAdapter<String> {
             View rowView = inflater.inflate(R.layout.list_layout_times, parent, false);
 
             TextView day = (TextView) rowView.findViewById(R.id.tv_day);
+
             final TextView leave = (TextView) rowView.findViewById(R.id.tv_time);
             final TextView get = (TextView) rowView.findViewById(R.id.tv_time2);
             String name = "Error parsing";
             String time1 = "";
             String time2 = "";
+
             try {
                 JSONArray ja = times.getJSONArray("week");
                 JSONObject jo = (JSONObject) ja.get(position);
@@ -65,11 +68,14 @@ public class TimeListAdapter extends ArrayAdapter<String> {
             get.setText(time2);
 
 
+
+           final CheckBox cb = (CheckBox) rowView.findViewById(R.id.cb_confirm);
             Button getIncrease = (Button) rowView.findViewById(R.id.button6);
 
             getIncrease.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    cb.setChecked(false);
                     String time = leave.getText().toString();
                     String newTime = increaseTime(time);
                     Log.e("click", newTime);
@@ -81,6 +87,7 @@ public class TimeListAdapter extends ArrayAdapter<String> {
             getIncrease2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    cb.setChecked(false);
                     String time = get.getText().toString();
                     String newTime = increaseTime(time);
                     Log.e("click", newTime);
@@ -93,6 +100,7 @@ public class TimeListAdapter extends ArrayAdapter<String> {
             getDecrease.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    cb.setChecked(false);
                     String time = leave.getText().toString();
                     String newTime = decreaseTime(time);
                     Log.e("click", newTime);
@@ -104,24 +112,22 @@ public class TimeListAdapter extends ArrayAdapter<String> {
             getDecrease2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    cb.setChecked(false);
                     String time = get.getText().toString();
                     String newTime = decreaseTime(time);
                     Log.e("click", newTime);
                     get.setText(newTime);
                 }
             });
-
-            CheckBox cb = (CheckBox) rowView.findViewById(R.id.cb_confirm);
-
             cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
-                        leave.setTextColor( parent.getResources().getColor(R.color.primary));
-                        get.setTextColor( parent.getResources().getColor(R.color.primary));
+                        leave.setTextColor( parent.getResources().getColor(R.color.check));
+                        get.setTextColor( parent.getResources().getColor(R.color.check));
                     }else{
-                        leave.setTextColor( parent.getResources().getColor(R.color.accent));
-                        get.setTextColor( parent.getResources().getColor(R.color.accent));
+                        leave.setTextColor( parent.getResources().getColor(R.color.unchecked));
+                        get.setTextColor( parent.getResources().getColor(R.color.unchecked));
                     }
                 }
             });
