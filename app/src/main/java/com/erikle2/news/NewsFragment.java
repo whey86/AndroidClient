@@ -1,9 +1,9 @@
 package com.erikle2.news;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +14,19 @@ import android.widget.ListView;
 import com.erikle2.main.R;
 import com.erikle2.network.Connection;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link NewsFragment.OnFragmentInteractionListener} interface
+
  * to handle interaction events.
  * Use the {@link NewsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewsFragment extends android.support.v4.app.Fragment {
+public class NewsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,7 +39,6 @@ public class NewsFragment extends android.support.v4.app.Fragment {
 
     private ListView newsfeed;
 
-    private JSONObject newsData;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -74,16 +75,51 @@ public class NewsFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        newsData = new Connection().getNews();
-        FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_news,container,false);
-        newsfeed = (ListView)v.findViewById(R.id.lv_news);
-        NewsFeedAdapter adapter = new NewsFeedAdapter(getActivity().getApplicationContext(),newsData);
+
+        FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_news, container, false);
+        newsfeed = (ListView) v.findViewById(R.id.lv_news);
+        NewsFeedAdapter adapter = new NewsFeedAdapter(getActivity().getApplicationContext(), createNewsArray());
         newsfeed.setAdapter(adapter);
         // Inflate the layout for this fragment
-        return  v;
+        return v;
 //        return inflater.inflate(R.layout.fragment_news, container, false);
     }
 
+    private News[] createNewsArray() {
+        News[] mNews = null;
+        JSONObject newsData = new Connection().getNews();
+
+        try {
+            JSONArray jo = newsData.getJSONArray("newsfeed");
+            mNews = new News[jo.length()];
+            for (int i = 0; i < jo.length(); i++) {
+                News newsObj = new News();
+                JSONObject jNews = (JSONObject)jo.get(i);
+                newsObj.setTitle((String) jNews.get("title"));
+                newsObj.setLocation((String) jNews.get("location"));
+                newsObj.setType((String) jNews.get("type"));
+//                newsObj.setText((String) jNews.get("text"));
+//                newsObj.setTime((String) jNews.get("time"));
+                JSONArray iJa = jNews.getJSONArray("icons");
+                int [] array = new int[iJa.length()];
+                for(int j = 0; j<iJa.length(); j++){
+                    array[j] =(int) iJa.get(j);
+                }
+                newsObj.setIndicator(array);
+                mNews[i] = newsObj;
+                Log.d("test", "test");
+            }
+
+        } catch (JSONException e) {
+            Log.d("Parsing exception","stop");
+                e.printStackTrace();
+        } finally {
+
+
+        }
+        Log.d("JSON", "news not returned");
+        return mNews;
+    }
 
 
 }

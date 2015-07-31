@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -17,26 +18,45 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Erik on 2015-07-21.
+ * ArrayAdapter för time listview
  */
 public class TimeListAdapter extends ArrayAdapter<String> {
-
+    /**
+     * Reference to context
+     */
     private final Context context;
-    private final String[] values;
+
+//    private final String[] values;
+    /**
+     * Refernce to fragment maneger
+     */
     private final FragmentManager fm;
-    private TextView text1, text2;
+
+//    private TextView text1, text2;
     private final JSONObject times;
 
+    /**
+     * Constructor
+     * @param context
+     * @param fm
+     * @param times
+     */
     public TimeListAdapter(Context context, FragmentManager fm, JSONObject times) {
         super(context, R.layout.list_layout_times, context.getResources().getStringArray(R.array.Days));
         this.context = context;
         this.fm = fm;
-        this.values = context.getResources().getStringArray(R.array.Days);
+//        this.values = context.getResources().getStringArray(R.array.Days);
         this.times = times;
 
     }
 
-
+    /**
+     * Returns the view of the listitem
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(final int position, View convertView,  final ViewGroup parent) {
         if(convertView == null){
@@ -44,6 +64,8 @@ public class TimeListAdapter extends ArrayAdapter<String> {
 
             View rowView = inflater.inflate(R.layout.list_layout_times, parent, false);
 
+            ImageView img = (ImageView)rowView.findViewById(R.id.list_icon);
+            img.setImageResource(R.drawable.expand_more);
             TextView day = (TextView) rowView.findViewById(R.id.tv_day);
 
             final TextView leave = (TextView) rowView.findViewById(R.id.tv_time);
@@ -122,13 +144,13 @@ public class TimeListAdapter extends ArrayAdapter<String> {
             cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked){
-                        leave.setTextColor( parent.getResources().getColor(R.color.check));
-                        get.setTextColor( parent.getResources().getColor(R.color.check));
-                    }else{
-                        leave.setTextColor( parent.getResources().getColor(R.color.unchecked));
-                        get.setTextColor( parent.getResources().getColor(R.color.unchecked));
-                    }
+//                    if(isChecked){
+//                        leave.setTextColor( parent.getResources().getColor(R.color.check));
+//                        get.setTextColor( parent.getResources().getColor(R.color.check));
+//                    }else{
+//                        leave.setTextColor( parent.getResources().getColor(R.color.unchecked));
+//                        get.setTextColor( parent.getResources().getColor(R.color.unchecked));
+//                    }
                 }
             });
 
@@ -140,6 +162,11 @@ public class TimeListAdapter extends ArrayAdapter<String> {
 
     }
 
+    /**
+     * Transfrom time to a new string with 15+ min
+     * @param time
+     * @return
+     */
     public  String increaseTime(String time) {
 
         int hour = Integer.parseInt("" + time.charAt(0) + time.charAt(1));
@@ -167,6 +194,11 @@ public class TimeListAdapter extends ArrayAdapter<String> {
         return ret;
     }
 
+    /**
+     * Transforms a string to a new string -15 min
+     * @param time
+     * @return
+     */
     public  String decreaseTime(String time) {
 
         int hour = Integer.parseInt("" + time.charAt(0) + time.charAt(1));

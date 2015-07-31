@@ -1,6 +1,11 @@
 package com.erikle2.main;
 
-import android.support.v4.app.Fragment;
+import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.app.FragmentManager;
+import android.app.Fragment;
+import android.util.Log;
 
 import com.erikle2.news.NewsFragment;
 
@@ -11,17 +16,39 @@ import com.erikle2.news.NewsFragment;
  */
 public class FragmentHandler {
 
-    public static Fragment getFragment(int posistion){
+    public static void getFragment(FragmentManager fm, int position){
 
-        if(posistion == 0){
-            return NewsFragment.newInstance("","");
+        //
+        Fragment f = null;
+        FragmentTransaction ft = null;
+        String tag= "";
+        if(position == 0){
+            f = NewsFragment.newInstance("","");
+            ft = fm.beginTransaction()
+                    .replace(R.id.container, f);
+            tag = "news";
         }
-        else if(posistion ==1){
-            return new TimesFragment();
+        else if(position ==1){
+
+            if(fm.findFragmentByTag("time") == null){
+                Log.e("fragment time","NULLt ");
+                tag="time";
+                f = new TimesFragment();
+                ft = fm.beginTransaction()
+                        .replace(R.id.container,f,tag ).addToBackStack(tag);
+            }else{
+                Log.e("fragment time","EXIST");
+                f=fm.findFragmentByTag("time");
+                ft = fm.beginTransaction()
+                        .replace(R.id.container, f);
+            }
+
         }
-        else if(posistion ==2){
-            return new TimesFragment();
+        else if(position ==2){
+            f = new Fragment();
         }
-        else return null;
-    }
+        Log.e("fragment TAG",tag);
+                ft.commit();
+
+    };
 }

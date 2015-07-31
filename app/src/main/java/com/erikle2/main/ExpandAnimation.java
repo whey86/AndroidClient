@@ -7,15 +7,29 @@ import android.view.animation.Transformation;
 import android.widget.LinearLayout;
 
 /**
- * Created by Erik on 2015-07-26.
+ * Class to create animations to more expand and lees expand a list item
  */
 public class ExpandAnimation extends Animation {
 
+    /**
+     * View to animate
+     */
     private View mAnimatedView;
+    /**
+     * Params to transform view
+     */
     private LinearLayout.LayoutParams mViewLayoutParams;
+    /**
+     * state of expand obj
+     */
     private boolean mIsVisibleAfter;
+    /**
+     * If it was ended
+     */
     private boolean mWasEndedAlready = false;
-
+    /**
+     * Varible holders
+     */
     private int mMarginStart, mMarginEnd;
 
     /**
@@ -28,17 +42,10 @@ public class ExpandAnimation extends Animation {
         setDuration(duration);
         mAnimatedView = view;
         mViewLayoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
-        swapState(state);
-    }
-
-    public void swapState(int state) {
-
-        // decide to show or hide the view
-
 
         if (state == 1) mIsVisibleAfter = true;
         else
- mIsVisibleAfter = (mAnimatedView.getVisibility() == View.VISIBLE);
+            mIsVisibleAfter = (mAnimatedView.getVisibility() == View.VISIBLE);
         Log.e("State", "" + state);
         Log.e("Is hidden", "" + mIsVisibleAfter);
         mMarginStart = mViewLayoutParams.bottomMargin;
@@ -51,6 +58,12 @@ public class ExpandAnimation extends Animation {
         }
     }
 
+
+    /**
+     * Function that executes animation
+     * @param interpolatedTime
+     * @param t
+     */
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
         super.applyTransformation(interpolatedTime, t);
@@ -76,6 +89,13 @@ public class ExpandAnimation extends Animation {
             mWasEndedAlready = true;
         }
 
+    }
 
+    /**
+     * Returns visibility of expand obj
+     * @return
+     */
+    public boolean isExpanded(){
+        return !mIsVisibleAfter;
     }
 }

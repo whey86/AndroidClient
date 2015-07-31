@@ -2,66 +2,80 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
 
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffffff">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:weightSum="4"
-
+        android:background="@color/primary"
         android:layout_gravity="center_horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/tv_title" />
+
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:id="@+id/icon_container"
+            android:gravity="right"
             android:layout_height="match_parent"
-            android:layout_weight="3">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
-                android:id="@+id/tv_title" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Uppsala"
-                    android:id="@+id/tv_location" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="14/8"
-                    android:id="@+id/tv_date" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="1600-1800"
-                    android:id="@+id/tv_item_ttime" />
-            </LinearLayout>
+            >
 
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/shortinfo_container">
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+                <!--android:text="Uppsala"-->
+                <!--android:id="@+id/tv_location" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+                <!--android:text="14/8"-->
+                <!--android:id="@+id/tv_date" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+                <!--android:text="1600-1800"-->
+                <!--android:id="@+id/tv_item_ttime" />-->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/ic_right_arrow"
                 android:id="@+id/imageView" />
         </LinearLayout>
     </LinearLayout>
@@ -69,8 +83,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="Textfield"
-        android:id="@+id/textView"
+        android:id="@+id/tv_text"
         android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></LinearLayout>
 
 </LinearLayout>

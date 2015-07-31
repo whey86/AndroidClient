@@ -3,14 +3,18 @@ package com.erikle2.main;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.erikle2.network.Connection;
+import com.parse.Parse;
+import com.parse.ParseObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MainActivity extends ActionBarActivity
@@ -27,8 +31,18 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //parse setup
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this, "YHnk0FZY29TDdjPbCpLowiwiQ7fi5AIGFg0C5TWO", "CFP96ldVeaYpMCumYVCYih587AVSJvJHoRyBAqVz");
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
         setContentView(R.layout.activity_main);
 
+        //Get navigation drawer fragment
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -40,8 +54,10 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 //Navigation drawer layout
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        //Set color of actionbar
         Resources res = getResources();
-        ColorDrawable cd = new ColorDrawable(res.getColor(R.color.primary_dark));
+        ColorDrawable cd = new ColorDrawable(res.getColor(R.color.primary));
         getSupportActionBar().setBackgroundDrawable(cd);
 
 
@@ -53,14 +69,7 @@ public class MainActivity extends ActionBarActivity
      */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        //Get fragment
-        Fragment f = FragmentHandler.getFragment(position);
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container,f)
-                    .commit();
-
+        FragmentHandler.getFragment( getFragmentManager(),position);
         onSectionAttached(position);
     }
 
@@ -74,7 +83,14 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getResources().getString(R.string.title_section1);
                 break;
             case 1:
-                mTitle = getResources().getString(R.string.title_section2);
+                Connection c = new Connection();
+               JSONObject j=  c.getTimes();
+                try{
+                    mTitle = "Vecka " + j.get("weeknr");
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
                 break;
             case 2:
                 mTitle = getResources().getString(R.string.title_section3);
@@ -88,7 +104,6 @@ public class MainActivity extends ActionBarActivity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

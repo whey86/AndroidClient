@@ -1,5 +1,7 @@
 package com.erikle2.main;
 
+import android.app.Fragment;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,7 +21,7 @@ import org.json.JSONObject;
 /**
  * Created by Erik on 2015-07-21.
  */
-public class TimesFragment extends android.support.v4.app.Fragment {
+public class TimesFragment extends Fragment {
 
     Button btnPrevious;
     Button btnNext;
@@ -29,21 +32,22 @@ public class TimesFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //If no saved instance create new view
+
         if(savedInstanceState == null){
             LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_times,container,false);
 
 //            btnPrevious = (Button)v.findViewById(R.id.btnPrevious);
 //            btnNext = (Button)v.findViewById(R.id.btnNext);
 
-            TextView weekTitle = (TextView) v.findViewById(R.id.tv_frag_title);
+//            TextView weekTitle = (TextView) v.findViewById(R.id.tv_frag_title);
             theWeek = getTimes();
-            try {
-                String week = theWeek.getString("weeknr");
-                weekTitle.setText("Vecka " + week);
+//            try {
+//                String week = theWeek.getString("weeknr");
+//                weekTitle.setText("Vecka " + week);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
 
             listViewTimes = (ListView) v.findViewById(R.id.lv_times);
 
@@ -78,7 +82,13 @@ public class TimesFragment extends android.support.v4.app.Fragment {
 
                         // Creating the expand animation for the item
                     ExpandAnimation curExpand = new ExpandAnimation(toolbar, 500,0);
-
+                    if(curExpand.isExpanded()){
+                        ImageView img = (ImageView)view.findViewById(R.id.list_icon);
+                        img.setImageResource(R.drawable.expand_less);
+                    }else{
+                        ImageView img = (ImageView)view.findViewById(R.id.list_icon);
+                        img.setImageResource(R.drawable.expand_more);
+                    }
                     // Start the animation on the toolbar
                     toolbar.startAnimation(curExpand);
 //
@@ -100,7 +110,7 @@ public class TimesFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
     }
 
     private JSONObject getTimes(){
