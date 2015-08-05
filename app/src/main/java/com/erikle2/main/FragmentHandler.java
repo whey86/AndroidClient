@@ -23,7 +23,7 @@ public class FragmentHandler {
         FragmentTransaction ft = null;
         String tag= "";
         if(position == 0){
-            f = NewsFragment.newInstance("","");
+            f = NewsFragment.newInstance();
             ft = fm.beginTransaction()
                     .replace(R.id.container, f);
             tag = "news";
@@ -47,7 +47,6 @@ public class FragmentHandler {
         else if(position ==2){
             f = new Fragment();
         }
-        Log.e("fragment TAG",tag);
                 ft.commit();
 
     };

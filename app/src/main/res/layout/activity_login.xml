@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/blurback"
+    android:layout_height="match_parent"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Förskolelänken"
+            android:textSize="40dp"
+            android:id="@+id/textView"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:textColor="@color/icons"
+            android:textColorHighlight="#ffffe71d"
+            android:background="#4f9d9c00"
+            />
+    </FrameLayout>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="210dp"
+        android:inputType="textEmailAddress"
+        android:hint="email"
+        android:textColor="@color/icons"
+        android:textSize="25dp"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_gravity="center_horizontal"
+        android:background="#4f9d9c00" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="password"
+        android:textSize="25dp"
+        android:textColor="@color/icons"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:layout_gravity="center_horizontal"
+        android:background="#4f9d9c00"
+        android:layout_marginTop="30dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:gravity="bottom|center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logga in"
+            android:textStyle="bold"
+            android:textColor="@color/icons"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/button"
+            android:id="@+id/btn_login"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrera"
+            android:layout_marginLeft="25dp"
+            android:textColor="@color/icons"
+            android:background="@drawable/button"
+            android:id="@+id/btn_signup"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+</LinearLayout>

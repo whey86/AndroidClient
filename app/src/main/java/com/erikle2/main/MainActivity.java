@@ -6,15 +6,25 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.erikle2.network.Connection;
+import com.erikle2.parser.Post;
+import com.erikle2.parser.PostHandler;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
@@ -32,14 +42,6 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //parse setup
-        Parse.enableLocalDatastore(this);
-
-        Parse.initialize(this, "YHnk0FZY29TDdjPbCpLowiwiQ7fi5AIGFg0C5TWO", "CFP96ldVeaYpMCumYVCYih587AVSJvJHoRyBAqVz");
-
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
         setContentView(R.layout.activity_main);
 
         //Get navigation drawer fragment
@@ -55,9 +57,10 @@ public class MainActivity extends ActionBarActivity
                 //Navigation drawer layout
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+
         //Set color of actionbar
         Resources res = getResources();
-        ColorDrawable cd = new ColorDrawable(res.getColor(R.color.primary));
+        ColorDrawable cd = new ColorDrawable(res.getColor(R.color.primary_dark));
         getSupportActionBar().setBackgroundDrawable(cd);
 
 

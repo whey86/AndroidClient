@@ -1,7 +1,9 @@
 package com.erikle2.news;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +41,7 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
      * @param context
      * @param data
      */
-    public NewsFeedAdapter(Context context, News[] data) {
+    public NewsFeedAdapter(Context context, ArrayList<News> data) {
         super(context, R.layout.list_layout_news, data);
         this.context = context;
 
@@ -67,13 +69,14 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
         tvTitle.setText(news.getTitle());
 
         //Set icons
-        int[] icons = news.getIndicator();
-        LinearLayout iconContainer = (LinearLayout) rowView.findViewById(R.id.icon_container);
-        for (int i = 0; i < icons.length; i++) {
+        ArrayList<String> icons = news.getIndicator();
+
+   LinearLayout iconContainer = (LinearLayout) rowView.findViewById(R.id.icon_container);
+        for (int i = 0; i < icons.size(); i++) {
             ImageView img = new ImageView(context);
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             llp.setMargins(7, 0, 0, 0); // llp.setMargins(left, top, right, bottom);
-            img.setImageResource(getImgResourceByPosition(icons[i]));
+            img.setImageResource(getImgResourceByName(icons.get(i)));
             img.setLayoutParams(llp);
             iconContainer.addView(img);
         }
@@ -81,67 +84,65 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
 
         // if location exist, add it to the view
         if (news.getLocation() != "") {
+            LinearLayout ll = new LinearLayout(context);
+            ll.setOrientation(LinearLayout.HORIZONTAL);
+
+            ImageView iv = new ImageView(context);
+            iv.setImageResource(R.drawable.ic_location_on_black_24dp);
+
+            ll.addView(iv);
             TextView tvLocation = new TextView(context);
             tvLocation.setText(news.getLocation());
-            infoContainer.addView(tvLocation);
+            tvLocation.setTextColor(Color.BLACK);
+
+            ll.addView(tvLocation);
+            infoContainer.addView(ll);
+        }
+//     // if date exist, add it to the view
+        if (news.getDate() != null) {
+            LinearLayout ll = new LinearLayout(context);
+            ll.setOrientation(LinearLayout.HORIZONTAL);
+
+            ImageView iv = new ImageView(context);
+            iv.setImageResource(R.drawable.ic_event_note_black_24dp);
+
+            ll.addView(iv);
+            TextView tvDate = new TextView(context);
+            tvDate.setText(news.getDate().toString().substring(0,16));
+            tvDate.setTextColor(Color.BLACK);
+
+            ll.addView(tvDate);
+            infoContainer.addView(ll);
         }
 
+        LinearLayout main = (LinearLayout) rowView.findViewById(R.id.ll_news_main);
         // if time exist, add it to the view
-        if (news.getTime() != "") {
-            TextView tvTime = new TextView(context);
-            tvTime.setText(news.getTime());
-            infoContainer.addView(tvTime);
+        if (news.getText() != "") {
+            TextView tvText = new TextView(context);
+            String text = news.getText();
+            if(text.length() > 20){
+                text = text.substring(0,17) + "...";
+            }
+
+            tvText.setText(text);
+
+
+            main.addView(tvText);
         }
-        //Trying to
-        // retrieve main obj
-//        try {
-////            JSONArray   mainObj =  data.getJSONArray("newsfeed");
-////            JSONObject  obj = mainObj.getJSONObject(position);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            Log.e("JSONException", "Couldnt retrieve main JSON obj");
-//
-//        }
-//        finally {
-//            //Trying to retrieve title
-//            try {
-//                title = mainObj.getString("title");
-//                TextView tvTitle = (TextView) rowView.findViewById(R.id.tv_title);
-//                tvTitle.setText(title);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//                Log.e("JSONException", "Couldnt retrieve main JSON obj");
-//            }
-//
-//            LinearLayout iconContainer = (LinearLayout) rowView.findViewById(R.id.icon_container);
-//            //Trying to retrieve icons
-//            try {
-//                icons = mainObj.getJSONArray("icons");
-//
-//                //        //Set the indicatior icons in header
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//                Log.e("JSONException", "Couldnt retrieve main JSON obj");
-//            }
-//
-//        }
+
+        // if type exist, aset the type color
+        if ( news.getType() != "") {
+            LinearLayout header =(LinearLayout)rowView.findViewById(R.id.header);
+            String type = news.getType();
+            Resources res =  getContext().getResources();
+            if(type.equals("event")){
+                header.setBackgroundColor(res.getColor(R.color.primary));
+            }else if(type.equals("info")){
+                header.setBackgroundColor(res.getColor(R.color.primary));
+            }
 
 
-        //
-
-
-//        TextView tvText = (TextView) rowView.findViewById(R.id.tv_text);
-//        tvText.setText(text);
-
-//
-
-//        text = obj.getString("text");
-//        type = obj.getString("type");
-
-//
-
-
+        }
         return rowView;
 
 //        }else{
@@ -150,16 +151,21 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
 
     }
 
-    private int getImgResourceByPosition(int posistion) {
+    private int getImgResourceByName(String posistion) {
 
         switch (posistion) {
-            case 0:
+            case "0":
                 return R.drawable.food;
-            case 1:
+            case "1":
                 return R.drawable.boot;
-            case 2:
+            case "2":
                 return R.drawable.clock;
         }
         return 0;
     }
+    public void addItems(ArrayList<News> list){
+        addAll(list);
+        notifyDataSetChanged();
+    }
+
 }

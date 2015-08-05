@@ -1,11 +1,16 @@
 package com.erikle2.news;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by Erik on 2015-07-31.
  */
 public class News {
     private String type, location, time, title, text;
-    private int [] indicator;
+    private Date date;
+    private ArrayList<String> indicator;
 
     public String getType() {
         return type;
@@ -47,11 +52,19 @@ public class News {
         this.text = text;
     }
 
-    public int[] getIndicator() {
+    public ArrayList<String> getIndicator() {
         return indicator;
     }
 
-    public void setIndicator(int[] indicator) {
+    public void setIndicator(ArrayList<String> indicator) {
         this.indicator = indicator;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

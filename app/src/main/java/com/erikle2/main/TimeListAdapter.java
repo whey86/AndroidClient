@@ -141,9 +141,9 @@ public class TimeListAdapter extends ArrayAdapter<String> {
                     get.setText(newTime);
                 }
             });
-            cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//            cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                    if(isChecked){
 //                        leave.setTextColor( parent.getResources().getColor(R.color.check));
 //                        get.setTextColor( parent.getResources().getColor(R.color.check));
@@ -151,8 +151,8 @@ public class TimeListAdapter extends ArrayAdapter<String> {
 //                        leave.setTextColor( parent.getResources().getColor(R.color.unchecked));
 //                        get.setTextColor( parent.getResources().getColor(R.color.unchecked));
 //                    }
-                }
-            });
+//                }
+//            });
 
             return rowView;
         }else{

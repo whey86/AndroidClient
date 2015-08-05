@@ -1,6 +1,8 @@
 package com.erikle2.main;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,39 +60,43 @@ public class TimesFragment extends Fragment {
             listViewTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.e("Last click", "" + lastClick);
-                    int preClick = lastClick;
-                    lastClick =position;
-
-                    if(preClick != -1){
-                        Log.e("Previous click", "" + preClick);
-
-                        View preView =  parent.getAdapter().getView(preClick,null,parent);
-                        TextView title = (TextView)preView.findViewById(R.id.tv_day);
-                        String sTitle = (String)title.getText();
-                        Log.e("preView title",""+ sTitle);
-                        View preToolbar = preView.findViewById(R.id.toolbar);
-
-                        // Creating the expand animation for the item
-                        ExpandAnimation preExpand = new ExpandAnimation(preToolbar, 500,1);
-                        // Start the animation on the toolbar
-                        preToolbar.startAnimation(preExpand);
-                    }
-
-
-                    View toolbar = view.findViewById(R.id.toolbar);
-
-                        // Creating the expand animation for the item
-                    ExpandAnimation curExpand = new ExpandAnimation(toolbar, 500,0);
-                    if(curExpand.isExpanded()){
-                        ImageView img = (ImageView)view.findViewById(R.id.list_icon);
-                        img.setImageResource(R.drawable.expand_less);
-                    }else{
-                        ImageView img = (ImageView)view.findViewById(R.id.list_icon);
-                        img.setImageResource(R.drawable.expand_more);
-                    }
-                    // Start the animation on the toolbar
-                    toolbar.startAnimation(curExpand);
+//                    Log.e("Last click", "" + lastClick);
+//                    int preClick = lastClick;
+//                    lastClick =position;
+//
+//                    if(preClick != -1){
+//                        Log.e("Previous click", "" + preClick);
+//
+//                        View preView =  parent.getAdapter().getView(preClick,null,parent);
+//                        TextView title = (TextView)preView.findViewById(R.id.tv_day);
+//                        String sTitle = (String)title.getText();
+//                        Log.e("preView title",""+ sTitle);
+//                        View preToolbar = preView.findViewById(R.id.toolbar);
+//
+//                        // Creating the expand animation for the item
+//                        ExpandAnimation preExpand = new ExpandAnimation(preToolbar, 500,1);
+//                        // Start the animation on the toolbar
+//                        preToolbar.startAnimation(preExpand);
+//                    }
+//
+//
+//                    View toolbar = view.findViewById(R.id.toolbar);
+//
+//                        // Creating the expand animation for the item
+//                    ExpandAnimation curExpand = new ExpandAnimation(toolbar, 500,0);
+//                    if(curExpand.isExpanded()){
+//                        ImageView img = (ImageView)view.findViewById(R.id.list_icon);
+//                        img.setImageResource(R.drawable.expand_less);
+//                    }else{
+//                        ImageView img = (ImageView)view.findViewById(R.id.list_icon);
+//                        img.setImageResource(R.drawable.expand_more);
+//                    }
+//                    // Start the animation on the toolbar
+//                    toolbar.startAnimation(curExpand);
+    Bundle b = new Bundle();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    DialogFragment newFragment = TimepickerDialog.newInstance(b);
+                    newFragment.show(ft, "dialog");
 //
                     return;
 
