@@ -27,6 +27,7 @@ public class PostHandler {
     private int mLast = -1;
     private int mPrevious = -1;
 
+    //TODO: What to do with strings? leave it of clean it
     public void getNewPosts(final NewsFeedAdapter adapter) {
 
 
@@ -48,6 +49,9 @@ public class PostHandler {
                         n.setIndicator((ArrayList<String>) item.get("icons"));
                         n.setType(item.getString("type"));
                         n.setDate(item.getDate("date"));
+                        n.setAuthor(item.getString("Author"));
+                        n.setCreatedAt(item.getCreatedAt());
+                        Log.d("CREATEDAT",item.getCreatedAt().toString());
                         news.add(n);
                     }
                     mLast = list.get(list.size()-1).getInt("number");
@@ -88,6 +92,8 @@ public class PostHandler {
                         n.setIndicator((ArrayList<String>) item.get("icons"));
                         n.setType(item.getString("type"));
                         n.setDate(item.getDate("date"));
+                        n.setAuthor(item.getString("Author"));
+                        n.setCreatedAt(item.getCreatedAt());
                         news.add(n);
                     }
 

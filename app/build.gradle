@@ -17,6 +17,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+}
+repositories {
+    mavenCentral()
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 dependencies {
@@ -24,4 +31,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(dir : 'libs', include: 'Parse-*.jar')
+    compile 'com.github.tittojose:TimeRangePicker:78c3ed7805'
+
 }

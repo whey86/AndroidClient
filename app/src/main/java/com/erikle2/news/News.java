@@ -8,9 +8,12 @@ import java.util.Date;
  * Created by Erik on 2015-07-31.
  */
 public class News {
-    private String type, location, time, title, text;
-    private Date date;
+    private String type, location, time, title, text, Author;
+    private Date date,createdAt;
     private ArrayList<String> indicator;
+
+    public final String POST_TYPE_EVENT = "event";
+    public final String POST_TYPE_INFO = "info";
 
     public String getType() {
         return type;
@@ -66,5 +69,21 @@ public class News {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getAuthor() {
+        return Author;
+    }
+
+    public void setAuthor(String author) {
+        Author = author;
     }
 }

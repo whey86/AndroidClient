@@ -1,9 +1,9 @@
 package com.erikle2.news;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,12 +33,6 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class NewsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
 
 
     private ListView newsfeed;
@@ -65,8 +59,6 @@ public class NewsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -78,22 +70,23 @@ public class NewsFragment extends Fragment {
         final NewsFeedAdapter adapter = new NewsFeedAdapter(getActivity().getApplicationContext(), new ArrayList<News>());
         newsfeed.setAdapter(adapter);
 
+        //Fetch initial news data
        final PostHandler ph = new PostHandler();
         ph.getNewPosts((NewsFeedAdapter) newsfeed.getAdapter());
 
+        //TODO: Check if methods works for big data
+        //Button to fetch more posts
         Button more = (Button)v.findViewById(R.id.btn_more);
-
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ph.getMorePosts(adapter);
             }
         });
-
         newsfeed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentManager fm =  getActivity().getFragmentManager();
+                FragmentManager fm =  getActivity().getSupportFragmentManager();
 
                 Fragment f = DetailFragment.newInstance((News)newsfeed.getAdapter().getItem(position));
                 FragmentTransaction ft = fm.beginTransaction()

@@ -72,7 +72,7 @@ public class MainActivity extends ActionBarActivity
      */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        FragmentHandler.getFragment( getFragmentManager(),position);
+        FragmentHandler.getFragment( getSupportFragmentManager(),position);
         onSectionAttached(position);
     }
 
@@ -92,6 +92,7 @@ public class MainActivity extends ActionBarActivity
                     mTitle = "Vecka " + j.get("weeknr");
                 }catch (JSONException e){
                     e.printStackTrace();
+                    mTitle = getResources().getString(R.string.title_section2);
                 }
 
                 break;

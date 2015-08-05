@@ -37,6 +37,7 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
     private int[] imgViews = new int[]{};
 
 
+
     /**
      * @param context
      * @param data
@@ -68,81 +69,80 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
         TextView tvTitle = (TextView) rowView.findViewById(R.id.tv_title);
         tvTitle.setText(news.getTitle());
 
-        //Set icons
-        ArrayList<String> icons = news.getIndicator();
+        if(news.getType().equals(news.POST_TYPE_EVENT)) {
+            //Set icons
+            ArrayList<String> icons = news.getIndicator();
 
-   LinearLayout iconContainer = (LinearLayout) rowView.findViewById(R.id.icon_container);
-        for (int i = 0; i < icons.size(); i++) {
-            ImageView img = new ImageView(context);
-            LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            llp.setMargins(7, 0, 0, 0); // llp.setMargins(left, top, right, bottom);
-            img.setImageResource(getImgResourceByName(icons.get(i)));
-            img.setLayoutParams(llp);
-            iconContainer.addView(img);
-        }
-        LinearLayout infoContainer = (LinearLayout) rowView.findViewById(R.id.shortinfo_container);
-
-        // if location exist, add it to the view
-        if (news.getLocation() != "") {
-            LinearLayout ll = new LinearLayout(context);
-            ll.setOrientation(LinearLayout.HORIZONTAL);
-
-            ImageView iv = new ImageView(context);
-            iv.setImageResource(R.drawable.ic_location_on_black_24dp);
-
-            ll.addView(iv);
-            TextView tvLocation = new TextView(context);
-            tvLocation.setText(news.getLocation());
-            tvLocation.setTextColor(Color.BLACK);
-
-            ll.addView(tvLocation);
-            infoContainer.addView(ll);
-        }
-//     // if date exist, add it to the view
-        if (news.getDate() != null) {
-            LinearLayout ll = new LinearLayout(context);
-            ll.setOrientation(LinearLayout.HORIZONTAL);
-
-            ImageView iv = new ImageView(context);
-            iv.setImageResource(R.drawable.ic_event_note_black_24dp);
-
-            ll.addView(iv);
-            TextView tvDate = new TextView(context);
-            tvDate.setText(news.getDate().toString().substring(0,16));
-            tvDate.setTextColor(Color.BLACK);
-
-            ll.addView(tvDate);
-            infoContainer.addView(ll);
-        }
-
-        LinearLayout main = (LinearLayout) rowView.findViewById(R.id.ll_news_main);
-        // if time exist, add it to the view
-        if (news.getText() != "") {
-            TextView tvText = new TextView(context);
-            String text = news.getText();
-            if(text.length() > 20){
-                text = text.substring(0,17) + "...";
+            LinearLayout iconContainer = (LinearLayout) rowView.findViewById(R.id.icon_container);
+            for (int i = 0; i < icons.size(); i++) {
+                ImageView img = new ImageView(context);
+                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                llp.setMargins(7, 0, 0, 0); // llp.setMargins(left, top, right, bottom);
+                img.setImageResource(getImgResourceByName(icons.get(i)));
+                img.setLayoutParams(llp);
+                iconContainer.addView(img);
             }
+            LinearLayout infoContainer = (LinearLayout) rowView.findViewById(R.id.shortinfo_container);
 
-            tvText.setText(text);
+            // if location exist, add it to the view
+            if (!news.getLocation().equals( "")) {
+                LinearLayout ll = new LinearLayout(context);
+                ll.setOrientation(LinearLayout.HORIZONTAL);
 
+                ImageView iv = new ImageView(context);
+                iv.setImageResource(R.drawable.ic_location_on_black_24dp);
 
-            main.addView(tvText);
+                ll.addView(iv);
+                TextView tvLocation = new TextView(context);
+                tvLocation.setText(news.getLocation());
+                tvLocation.setTextColor(Color.BLACK);
+
+                ll.addView(tvLocation);
+                infoContainer.addView(ll);
+            }
+//     // if date exist, add it to the view
+            if (news.getDate() != null) {
+                LinearLayout ll = new LinearLayout(context);
+                ll.setOrientation(LinearLayout.HORIZONTAL);
+
+                ImageView iv = new ImageView(context);
+                iv.setImageResource(R.drawable.ic_event_note_black_24dp);
+
+                ll.addView(iv);
+                TextView tvDate = new TextView(context);
+                tvDate.setText(news.getDate().toString().substring(0, 16));
+                tvDate.setTextColor(Color.BLACK);
+
+                ll.addView(tvDate);
+                infoContainer.addView(ll);
+            }
         }
+            LinearLayout main = (LinearLayout) rowView.findViewById(R.id.ll_news_main);
+            // if time exist, add it to the view
+            if (!news.getText().equals("")) {
+                TextView tvText = new TextView(context);
+                String text = news.getText();
+                if (text.length() > 150) {
+                    text = text.substring(0, 147) + "...";
+                }
+
+                tvText.setText(text);
+
+
+                main.addView(tvText);
+            }
 
         // if type exist, aset the type color
-        if ( news.getType() != "") {
-            LinearLayout header =(LinearLayout)rowView.findViewById(R.id.header);
-            String type = news.getType();
-            Resources res =  getContext().getResources();
-            if(type.equals("event")){
-                header.setBackgroundColor(res.getColor(R.color.primary));
-            }else if(type.equals("info")){
-                header.setBackgroundColor(res.getColor(R.color.primary));
-            }
-
-
-        }
+//        if ( news.getType() != "") {
+//            LinearLayout header =(LinearLayout)rowView.findViewById(R.id.header);
+//            String type = news.getType();
+//            Resources res =  getContext().getResources();
+//            if(type.equals("event")){
+//                header.setBackgroundColor(res.getColor(R.color.primary));
+//            }else if(type.equals("info")){
+//                header.setBackgroundColor(res.getColor(R.color.primary));
+//            }
+//        }
         return rowView;
 
 //        }else{

@@ -1,22 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Förskolan</string>
 
     <!-- NAVIGATION DRAWER -->
-    <string name="title_section1">Hem</string>
-    <string name="title_section2">Tider</string>
-    <string name="title_section3">Sjukanmälan</string>
+    <string name="title_section1">Vad händer?</string>
+    <string name="title_section2">Hämting/Lämning</string>
+    <string name="title_section3">Frånvaroanmälan</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_example">Example action</string>
+    <string name="action_example">Min sida</string>
 
     <string name="action_settings">Settings</string>
 
-    <!-- TIMEFRAGMENT-->
 
+    <!-- TIMEFRAGMENT-->
     <string name="default_time_msg">Ange tid genom att klicka här</string>
-    <string name="btn_confirm">Bekräfta tider</string>
+    <string name="time_confirm">Bekräfta tider</string>
+    <string name="leave">Lämnas</string>
+    <string name="get">Hämtas</string>
 
     <!--Listview-->
     <array name="Days">
@@ -27,7 +30,15 @@
         <item>Fredag</item>
     </array>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- NEWFRAGMENT -->
+
+    <!-- DATATYPES -->
+    <string name="post_title">title</string>
+    <string name="post_text">text</string>
+    <string name="post_type">type</string>
+    <string name="post_location">location</string>
+    <string name="post_author">author</string>
+    <string name="post_createdAt">createdAt</string>
+    <string name="post_date">date</string>
 
 </resources>

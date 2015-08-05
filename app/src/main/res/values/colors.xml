@@ -13,4 +13,5 @@
   <color name="unchecked">#770000</color>
   <color name="event">#50770000</color>
   <color name="info">#50000077</color>
+  <color name="white">#FFFFFF</color>
 </resources>
