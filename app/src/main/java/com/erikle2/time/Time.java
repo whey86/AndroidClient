@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by Erik on 2015-08-06.
  */
 public class Time {
-    String startTime, endTime;
+    private String startTime, endTime;
     Date date;
     int background = R.color.unchecked;
     int color1 = R.color.unchecked;

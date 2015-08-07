@@ -36,8 +36,9 @@ public class TimepickerDialog extends TimeRangePickerDialog {
     boolean is24HourMode;
     public static final String TIMERANGEPICKER_TAG = "timerangepicker";
 
+    private final int[] WEEKDAYS = new int[]{Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY};
     private int position;
-    private ListView list;
+    private TimeListAdapter mAdapter;
     onViewUpdate viewUpdate;
 
     public  TimepickerDialog(){
@@ -126,6 +127,15 @@ public class TimepickerDialog extends TimeRangePickerDialog {
             int endMin = endTimePicker.getCurrentMinute();
 
             viewUpdate.updateView(position,starthour, startmin, endHour, endMin);
+
+            Time t = new Time();
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.DAY_OF_WEEK, WEEKDAYS[1]);
+            t.setDate(c.getTime());
+            t.setStartTime("" + ":ANUS" + "");
+            t.setEndTime("" + ":" + "");
+            t.timeConfirmed();
+            mAdapter.add(t);
 //            onTimeRangeSelectedListener.onTimeRangeSelected(starthour, startmin, endHour, endMin);
 
 //            ParseObject gameScore = new ParseObject("time");
@@ -138,8 +148,8 @@ public class TimepickerDialog extends TimeRangePickerDialog {
         }
     }
 
-    public void setAdapter(ListView list) {
-        this.list = list;
+    public void setAdapter(TimeListAdapter list) {
+        this.mAdapter = list;
     }
 
     public void setPosition(int pos) {
@@ -159,11 +169,11 @@ public class TimepickerDialog extends TimeRangePickerDialog {
         this.viewUpdate = callback2;
     }
 
-    public static TimepickerDialog newInstance(OnTimeRangeSelectedListener callback, onViewUpdate callback2, boolean is24HourMode, int pos, ListView list) {
+    public static TimepickerDialog newInstance(OnTimeRangeSelectedListener callback, onViewUpdate callback2, boolean is24HourMode) {
         TimepickerDialog ret = new TimepickerDialog();
         ret.initialize(callback, is24HourMode);
-        ret.setAdapter(list);
-        ret.setPosition(pos);
+//        ret.setAdapter(adapter);
+//        ret.setPosition(pos);
         ret.setOnViewUpdate(callback2);
         return ret;
     }

@@ -38,9 +38,7 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
 
     Button btnPrevious;
     Button btnNext;
-    private  TimeListAdapter adapter;
-    private ListView listViewTimes;
-    private ArrayList<Time> theWeek;
+    ListView listViewTimes;
     private int lastClick = -1;
     private final int[] WEEKDAYS = new int[]{Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY};
 
@@ -56,8 +54,7 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
 //            btnPrevious = (Button)v.findViewById(R.id.btnPrevious);
 //            btnNext = (Button)v.findViewById(R.id.btnNext);
 
-//            TextView weekTitle = (TextView) v.findViewById(R.id.tv_frag_title);
-            theWeek = getTimes();
+
 //            try {
 //                String week = theWeek.getString("weeknr");
 //                weekTitle.setText("Vecka " + week);
@@ -68,8 +65,9 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
 
             listViewTimes = (ListView) v.findViewById(R.id.lv_times);
 
-             adapter = new TimeListAdapter(getActivity().getApplicationContext(), getActivity().getFragmentManager(), theWeek);
+             final TimeListAdapter adapter = new TimeListAdapter(getActivity(), getActivity().getFragmentManager(), new ArrayList<Time>());
             listViewTimes.setAdapter(adapter);
+            initTimes(adapter);
 
 
             //ListItem is clicked
@@ -77,13 +75,13 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    final TimepickerDialog timePickerDialog = TimepickerDialog.newInstance(TimesFragment.this, TimesFragment.this, true, position, listViewTimes);
+                    TimepickerDialog timePickerDialog = TimepickerDialog.newInstance(TimesFragment.this, TimesFragment.this, true);
 
                     timePickerDialog.show(getActivity().getSupportFragmentManager(), TIMERANGEPICKER_TAG);
 
+                    TimepickerDialog.onViewUpdate()
                 }
             });
-
 
             return v;
         } else {
@@ -98,7 +96,7 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
         setRetainInstance(true);
     }
 
-    private ArrayList<Time> getTimes() {
+    private void initTimes(TimeListAdapter adapter) {
 //        JSONArray week = new JSONArray();
 //
 //        for(int i = 0; i<5;i++){
@@ -125,8 +123,7 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
         // Assume ParseObject myPost was previously created.
         // Assume ParseObject myPost was previously created.
 
-        //List to story time data for adapter
-        final ArrayList<Time> mWeek = new ArrayList<>();
+        ArrayList<Time> list = new ArrayList<>();
 
         //
         Calendar now = Calendar.getInstance();
@@ -140,7 +137,7 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
             t.setStartTime("START");
             t.setEndTime("END");
             t.setDate(c.getTime());
-            mWeek.add(t);
+            adapter.add(t);
         }
 
         //Fetch times from backend to make sure user see the latest sent times
@@ -165,7 +162,6 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
 //                }
 //            }
 //        });
-        return mWeek;
     }
 
     @Override
@@ -178,14 +174,15 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
     public void updateView(int position, int i, int i1, int i2, int i3) {
         Log.d("UPDATE VIEW", "HAHAHA POSITION " + position);
 
-        Time t = new Time();
-        t.setStartTime(i + ":ANUS" + i1);
-        t.setEndTime(i2 + ":" + i3);
-        t.timeConfirmed();
+//        Time t = new Time();
+//        Calendar c = Calendar.getInstance();
+//        c.set(Calendar.DAY_OF_WEEK, WEEKDAYS[1]);
+//        t.setDate(c.getTime());
+//        t.setStartTime( + ":" + "");
+//        t.setEndTime("" + ":" + "");
+//        t.timeConfirmed();
+//        adapter.add(t);
 
-        theWeek.add(t);
-
-        adapter.notifyDataSetChanged();
 
     }
 }

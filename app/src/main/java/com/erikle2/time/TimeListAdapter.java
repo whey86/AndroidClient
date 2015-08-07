@@ -38,11 +38,12 @@ public class TimeListAdapter extends ArrayAdapter<Time> {
      */
     private final FragmentManager fm;
 
-//    private TextView text1, text2;
+    //    private TextView text1, text2;
     private final ArrayList times;
 
     /**
      * Constructor
+     *
      * @param context
      * @param fm
      * @param times
@@ -58,44 +59,55 @@ public class TimeListAdapter extends ArrayAdapter<Time> {
 
     /**
      * Returns the view of the listitem
+     *
      * @param position
      * @param convertView
      * @param parent
      * @return
      */
     @Override
-    public View getView(final int position, View convertView,  final ViewGroup parent) {
-        Log.d("GETVIEW","GET VIEW IS RUNNING" +
+    public View getView(final int position, View convertView, final ViewGroup parent) {
+        Log.d("GETVIEW", "GET VIEW IS RUNNING" +
                 "");
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View rowView = inflater.inflate(R.layout.list_layout_times, parent, false);
 
-            ImageView img = (ImageView)rowView.findViewById(R.id.list_icon);
+            // Ref to the views
+            ImageView img = (ImageView) rowView.findViewById(R.id.list_icon);
             img.setImageResource(R.drawable.expand_more);
             TextView day = (TextView) rowView.findViewById(R.id.tv_day);
+            TextView leave = (TextView) rowView.findViewById(R.id.tv_time);
+            TextView get = (TextView) rowView.findViewById(R.id.tv_time2);
 
-             TextView leave = (TextView) rowView.findViewById(R.id.tv_time);
-             TextView get = (TextView) rowView.findViewById(R.id.tv_time2);
-            String name ;
+            //
+            String name;
             String time1;
             String time2;
 
+            //Data item for this
             Time time = getItem(position);
 
+            //Get day of the week from date
             Calendar cal = Calendar.getInstance();
             cal.setTime(time.getDate());
             int dayoftheweek = cal.get(Calendar.DAY_OF_WEEK);
 
-            name = "" + context.getResources().getStringArray(R.array.Days)[dayoftheweek-2] + "  " + cal.get(Calendar.DATE ) + "/" +  cal.get(Calendar.MONTH);
+            // Set title
+            name = "" + context.getResources().getStringArray(R.array.Days)[dayoftheweek - 2] + "  " + cal.get(Calendar.DATE) + "/" + cal.get(Calendar.MONTH);
+
+            //Set times
             time1 = time.getStartTime();
             time2 = time.getEndTime();
+
+            //Init timeItem GUI
             day.setText(name);
             leave.setText(time1);
             get.setText(time2);
 
-           LinearLayout ll= (LinearLayout) rowView.findViewById(R.id.item_container);
+            //Set background
+            LinearLayout ll = (LinearLayout) rowView.findViewById(R.id.item_container);
             ll.setBackgroundResource(time.getBackground());
 
 
@@ -163,7 +175,7 @@ public class TimeListAdapter extends ArrayAdapter<Time> {
 //            });
 
             return rowView;
-        }else{
+        } else {
             return convertView;
         }
 
@@ -172,31 +184,31 @@ public class TimeListAdapter extends ArrayAdapter<Time> {
 
     /**
      * Transfrom time to a new string with 15+ min
+     *
      * @param time
      * @return
      */
-    public  String increaseTime(String time) {
+    public String increaseTime(String time) {
 
         int hour = Integer.parseInt("" + time.charAt(0) + time.charAt(1));
-        int min = Integer.parseInt("" + time.charAt(3)+ time.charAt(4));
+        int min = Integer.parseInt("" + time.charAt(3) + time.charAt(4));
         String divider = ":";
         min = min + 15;
-        if(min >= 60){
+        if (min >= 60) {
             min = 0;
-            hour ++;
-            if(hour>=24){
+            hour++;
+            if (hour >= 24) {
                 hour = 0;
             }
         }
-        if(min<10){
+        if (min < 10) {
             divider += "0";
         }
         String ret;
-        if(hour<10)
-        {
-            ret = "0" + hour + divider +  min;
-        }else{
-            ret = hour + divider +  min;
+        if (hour < 10) {
+            ret = "0" + hour + divider + min;
+        } else {
+            ret = hour + divider + min;
         }
 
         return ret;
@@ -204,36 +216,35 @@ public class TimeListAdapter extends ArrayAdapter<Time> {
 
     /**
      * Transforms a string to a new string -15 min
+     *
      * @param time
      * @return
      */
-    public  String decreaseTime(String time) {
+    public String decreaseTime(String time) {
 
         int hour = Integer.parseInt("" + time.charAt(0) + time.charAt(1));
-        int min = Integer.parseInt("" + time.charAt(3)+ time.charAt(4));
+        int min = Integer.parseInt("" + time.charAt(3) + time.charAt(4));
         String divider = ":";
         min = min - 15;
-        if(min < 0){
+        if (min < 0) {
             min = 45;
-            hour --;
-            if(hour<0){
+            hour--;
+            if (hour < 0) {
                 hour = 23;
             }
         }
-        if(min<10){
+        if (min < 10) {
             divider += "0";
         }
         String ret;
-        if(hour<10)
-        {
-            ret = "0" + hour + divider +  min;
-        }else{
-            ret = hour + divider +  min;
+        if (hour < 10) {
+            ret = "0" + hour + divider + min;
+        } else {
+            ret = hour + divider + min;
         }
 
         return ret;
     }
-
 
 
 }
