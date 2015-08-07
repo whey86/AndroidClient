@@ -11,25 +11,38 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.erikle2.main.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import me.tittojose.www.timerangepicker_library.TimeRangePickerDialog;
 
 /**
  * Created by Erik on 2015-07-21.
  */
-public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnTimeRangeSelectedListener {
+public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnTimeRangeSelectedListener, TimepickerDialog.onViewUpdate {
 
     Button btnPrevious;
     Button btnNext;
-    ListView listViewTimes;
-    JSONObject theWeek;
+    private  TimeListAdapter adapter;
+    private ListView listViewTimes;
+    private ArrayList<Time> theWeek;
     private int lastClick = -1;
+    private final int[] WEEKDAYS = new int[]{Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY};
 
     public static final String TIMERANGEPICKER_TAG = "timerangepicker";
 
@@ -37,8 +50,8 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //If no saved instance create new view
 
-        if(savedInstanceState == null){
-            LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_times,container,false);
+        if (savedInstanceState == null) {
+            LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_times, container, false);
 
 //            btnPrevious = (Button)v.findViewById(R.id.btnPrevious);
 //            btnNext = (Button)v.findViewById(R.id.btnNext);
@@ -55,61 +68,25 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
 
             listViewTimes = (ListView) v.findViewById(R.id.lv_times);
 
-            TimeListAdapter adapter = new TimeListAdapter(getActivity().getApplicationContext(), getActivity().getFragmentManager(),theWeek);
+             adapter = new TimeListAdapter(getActivity().getApplicationContext(), getActivity().getFragmentManager(), theWeek);
             listViewTimes.setAdapter(adapter);
+
 
             //ListItem is clicked
             listViewTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-//                    Log.e("Last click", "" + lastClick);
-//                    int preClick = lastClick;
-//                    lastClick =position;
-//
-//                    if(preClick != -1){
-//                        Log.e("Previous click", "" + preClick);
-//
-//                        View preView =  parent.getAdapter().getView(preClick,null,parent);
-//                        TextView title = (TextView)preView.findViewById(R.id.tv_day);
-//                        String sTitle = (String)title.getText();
-//                        Log.e("preView title",""+ sTitle);
-//                        View preToolbar = preView.findViewById(R.id.toolbar);
-//
-//                        // Creating the expand animation for the item
-//                        ExpandAnimation preExpand = new ExpandAnimation(preToolbar, 500,1);
-//                        // Start the animation on the toolbar
-//                        preToolbar.startAnimation(preExpand);
-//                    }
-//
-//
-//                    View toolbar = view.findViewById(R.id.toolbar);
-//
-//                        // Creating the expand animation for the item
-//                    ExpandAnimation curExpand = new ExpandAnimation(toolbar, 500,0);
-//                    if(curExpand.isExpanded()){
-//                        ImageView img = (ImageView)view.findViewById(R.id.list_icon);
-//                        img.setImageResource(R.drawable.expand_less);
-//                    }else{
-//                        ImageView img = (ImageView)view.findViewById(R.id.list_icon);
-//                        img.setImageResource(R.drawable.expand_more);
-//                    }
-//                    // Start the animation on the toolbar
-//                    toolbar.startAnimation(curExpand);
-//    Bundle b = new Bundle();
-                    final TimepickerDialog timePickerDialog = TimepickerDialog.newInstance(TimesFragment.this,true);
+                    final TimepickerDialog timePickerDialog = TimepickerDialog.newInstance(TimesFragment.this, TimesFragment.this, true, position, listViewTimes);
 
                     timePickerDialog.show(getActivity().getSupportFragmentManager(), TIMERANGEPICKER_TAG);
 
-
                 }
-        });
-
+            });
 
 
             return v;
-        }else{
+        } else {
             return super.onCreateView(inflater, container, savedInstanceState);
         }
 
@@ -121,36 +98,94 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
         setRetainInstance(true);
     }
 
-    private JSONObject getTimes(){
-        JSONArray week = new JSONArray();
+    private ArrayList<Time> getTimes() {
+//        JSONArray week = new JSONArray();
+//
+//        for(int i = 0; i<5;i++){
+//            JSONObject day = new JSONObject();
+//           String s = getResources().getStringArray(R.array.Days)[i];
+//            try{
+//                day.put("name",s);
+//                day.put("leave","08:00 - ");
+//                day.put("get","16:00");
+//            }catch(JSONException e){
+//                e.printStackTrace();
+//            }
+//            week.put(day);
+//
+//        }
+//        JSONObject mainObj = new JSONObject();
+//        try{
+//            mainObj.put("weeknr",31);
+//            mainObj.put("week", week);
+//        }catch(JSONException e){
+//            e.printStackTrace();
+//        }
+//            return mainObj;
+        // Assume ParseObject myPost was previously created.
+        // Assume ParseObject myPost was previously created.
 
-        for(int i = 0; i<5;i++){
-            JSONObject day = new JSONObject();
-           String s = getResources().getStringArray(R.array.Days)[i];
-            try{
-                day.put("name",s);
-                day.put("leave","08:00 - ");
-                day.put("get","16:00");
-            }catch(JSONException e){
-                e.printStackTrace();
-            }
-            week.put(day);
+        //List to story time data for adapter
+        final ArrayList<Time> mWeek = new ArrayList<>();
 
+        //
+        Calendar now = Calendar.getInstance();
+        int currentWeek = now.get(Calendar.WEEK_OF_YEAR);
+
+        //init arraylist with default data
+        for (int j = 0; j < 5; j++) {
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.DAY_OF_WEEK, WEEKDAYS[j]);
+            Time t = new Time();
+            t.setStartTime("START");
+            t.setEndTime("END");
+            t.setDate(c.getTime());
+            mWeek.add(t);
         }
-        JSONObject mainObj = new JSONObject();
-        try{
-            mainObj.put("weeknr",31);
-            mainObj.put("week", week);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
 
-            return mainObj;
-
+        //Fetch times from backend to make sure user see the latest sent times
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("time");
+//        query.whereEqualTo("user", ParseUser.getCurrentUser());
+//        query.whereEqualTo("week", currentWeek);
+//
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> timeList, ParseException e) {
+//
+//
+//                for (ParseObject item : timeList) {
+//                    for (int i = 0; i < 5; i++) {
+//                        Date d = item.getDate("date");
+//                        if (d == mWeek.get(i).getDate()) {
+//                            mWeek.get(i).setDate(item.getDate("date"));
+//                            mWeek.get(i).setStartTime(item.getString("startTime"));
+//                            mWeek.get(i).setEndTime(item.getString("endTime"));
+//                        }
+//                    }
+//
+//                }
+//            }
+//        });
+        return mWeek;
     }
 
     @Override
     public void onTimeRangeSelected(int i, int i1, int i2, int i3) {
-        Log.d("TIMEPICKER", "CLICK");
+
+
+    }
+
+    @Override
+    public void updateView(int position, int i, int i1, int i2, int i3) {
+        Log.d("UPDATE VIEW", "HAHAHA POSITION " + position);
+
+        Time t = new Time();
+        t.setStartTime(i + ":ANUS" + i1);
+        t.setEndTime(i2 + ":" + i3);
+        t.timeConfirmed();
+
+        theWeek.add(t);
+
+        adapter.notifyDataSetChanged();
+
     }
 }

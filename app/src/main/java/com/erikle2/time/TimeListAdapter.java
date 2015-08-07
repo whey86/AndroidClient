@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.erikle2.main.R;
@@ -19,10 +20,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 /**
  * ArrayAdapter för time listview
  */
-public class TimeListAdapter extends ArrayAdapter<String> {
+public class TimeListAdapter extends ArrayAdapter<Time> {
     /**
      * Reference to context
      */
@@ -35,7 +39,7 @@ public class TimeListAdapter extends ArrayAdapter<String> {
     private final FragmentManager fm;
 
 //    private TextView text1, text2;
-    private final JSONObject times;
+    private final ArrayList times;
 
     /**
      * Constructor
@@ -43,8 +47,8 @@ public class TimeListAdapter extends ArrayAdapter<String> {
      * @param fm
      * @param times
      */
-    public TimeListAdapter(Context context, FragmentManager fm, JSONObject times) {
-        super(context, R.layout.list_layout_times, context.getResources().getStringArray(R.array.Days));
+    public TimeListAdapter(Context context, FragmentManager fm, ArrayList<Time> times) {
+        super(context, R.layout.list_layout_times, times);
         this.context = context;
         this.fm = fm;
 //        this.values = context.getResources().getStringArray(R.array.Days);
@@ -61,6 +65,8 @@ public class TimeListAdapter extends ArrayAdapter<String> {
      */
     @Override
     public View getView(final int position, View convertView,  final ViewGroup parent) {
+        Log.d("GETVIEW","GET VIEW IS RUNNING" +
+                "");
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -70,31 +76,31 @@ public class TimeListAdapter extends ArrayAdapter<String> {
             img.setImageResource(R.drawable.expand_more);
             TextView day = (TextView) rowView.findViewById(R.id.tv_day);
 
-            final TextView leave = (TextView) rowView.findViewById(R.id.tv_time);
-            final TextView get = (TextView) rowView.findViewById(R.id.tv_time2);
-            String name = "Error parsing";
-            String time1 = "";
-            String time2 = "";
+             TextView leave = (TextView) rowView.findViewById(R.id.tv_time);
+             TextView get = (TextView) rowView.findViewById(R.id.tv_time2);
+            String name ;
+            String time1;
+            String time2;
 
-            try {
-                JSONArray ja = times.getJSONArray("week");
-                JSONObject jo = (JSONObject) ja.get(position);
-                name = (String) jo.get("name");
-                time1 = (String) jo.get("leave");
-                time2 = (String) jo.get("get");
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.e("TimeListAdapter", "JSON PARSING FAIL");
-            }
+            Time time = getItem(position);
 
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(time.getDate());
+            int dayoftheweek = cal.get(Calendar.DAY_OF_WEEK);
+
+            name = "" + context.getResources().getStringArray(R.array.Days)[dayoftheweek-2] + "  " + cal.get(Calendar.DATE ) + "/" +  cal.get(Calendar.MONTH);
+            time1 = time.getStartTime();
+            time2 = time.getEndTime();
             day.setText(name);
             leave.setText(time1);
             get.setText(time2);
 
+           LinearLayout ll= (LinearLayout) rowView.findViewById(R.id.item_container);
+            ll.setBackgroundResource(time.getBackground());
 
 
-           final CheckBox cb = (CheckBox) rowView.findViewById(R.id.cb_confirm);
-            Button getIncrease = (Button) rowView.findViewById(R.id.button6);
+//           final CheckBox cb = (CheckBox) rowView.findViewById(R.id.cb_confirm);
+//            Button getIncrease = (Button) rowView.findViewById(R.id.button6);
 //TODO: Decide to use this expand view or dialog to select time
 //            getIncrease.setOnClickListener(new View.OnClickListener() {
 //                @Override

@@ -1,166 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-
-    >
+    android:layout_margin="20dp"
+    android:orientation="vertical">
     <!--android:background="#ffffffff">-->
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:background="@color/primary"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/icons"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Dag"
-            android:id="@+id/tv_day" />
+        android:id="@+id/item_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/unchecked"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:gravity="right">
+            android:orientation="horizontal">
 
-            <ImageView
+            <TextView
+                android:id="@+id/tv_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/list_icon" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_margin="10dp"
-        android:gravity="right"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="0.7"
-            android:layout_height="match_parent">
+                android:text="Dag"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/icons" />
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_weight="2"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center">
+                android:gravity="right"
+                android:orientation="horizontal">
 
-                <TextView
+                <ImageView
+                    android:id="@+id/list_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary_dark_material_dark"
-                    android:textSize="30dp"
-                    android:text="07:00 - "
-                    android:layout_marginBottom="10dp"
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/tv_time" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/primary_dark_material_dark"
-                    android:textSize="30dp"
-                    android:text=" 16:00"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/tv_time2"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
-            <!--android:visibility="gone"-->
-            <LinearLayout android:id="@+id/toolbar"
-                android:visibility="gone"
-                android:orientation="vertical"
-                android:layout_height="50dip"
-                android:layout_width="fill_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-               >
 
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="horizontal"
-
                     android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="top|center">
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:focusable="false"
-                        android:background="@drawable/btn_round"
-                        android:text="-"
-                        android:layout_margin="8dp"
-                        android:id="@+id/button5" />
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:text="07:00  "
+                        android:textColor="@color/primary_dark_material_dark"
+                        android:textSize="30dp" />
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:focusable="false"
-                        android:background="@drawable/btn_round"
-                        android:text="+"
-                        android:layout_margin="8dp"
-                        android:id="@+id/button6" />
+                    <TextView
+                        android:id="@+id/tv_time_divider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:text=" - "
+                        android:textColor="@color/primary_dark_material_dark"
+                        android:textSize="30dp" />
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:focusable="false"
-                        android:background="@drawable/btn_round"
-                        android:text="-"
-                        android:layout_margin="8dp"
-                        android:id="@+id/button7" />
+                    <TextView
+                        android:id="@+id/tv_time2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:text=" 16:00"
+                        android:textColor="@color/primary_dark_material_dark"
+                        android:textSize="30dp" />
+                </LinearLayout>
+                <!--android:visibility="gone"-->
+                <!--<LinearLayout android:id="@+id/toolbar"-->
+                <!--android:visibility="gone"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_height="50dip"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!-->-->
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:focusable="false"
-                        android:background="@drawable/btn_round"
-                        android:text="+"
-                        android:layout_margin="8dp"
-                        android:id="@+id/button8" />
+
+                <!--<LinearLayout-->
+                <!--android:orientation="horizontal"-->
+
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:gravity="top|center">-->
+
+                <!--<Button-->
+                <!--style="?android:attr/buttonStyleSmall"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:focusable="false"-->
+                <!--android:background="@drawable/btn_round"-->
+                <!--android:text="-"-->
+                <!--android:layout_margin="8dp"-->
+                <!--android:id="@+id/button5" />-->
+
+                <!--<Button-->
+                <!--style="?android:attr/buttonStyleSmall"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:focusable="false"-->
+                <!--android:background="@drawable/btn_round"-->
+                <!--android:text="+"-->
+                <!--android:layout_margin="8dp"-->
+                <!--android:id="@+id/button6" />-->
+
+                <!--<Button-->
+                <!--style="?android:attr/buttonStyleSmall"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:focusable="false"-->
+                <!--android:background="@drawable/btn_round"-->
+                <!--android:text="-"-->
+                <!--android:layout_margin="8dp"-->
+                <!--android:id="@+id/button7" />-->
+
+                <!--<Button-->
+                <!--style="?android:attr/buttonStyleSmall"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:focusable="false"-->
+                <!--android:background="@drawable/btn_round"-->
+                <!--android:text="+"-->
+                <!--android:layout_margin="8dp"-->
+                <!--android:id="@+id/button8" />-->
 
 
+                <!--</LinearLayout>-->
 
+                <!--</LinearLayout>-->
+                <!--</LinearLayout>-->
+
+                <!--<LinearLayout-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_weight="0.2"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:gravity="top|center|right"-->
+                <!--android:layout_marginRight="15dp">-->
+
+                <!--<CheckBox-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:button="@drawable/checkbox_background"-->
+                <!--android:focusable="false"-->
+                <!--android:id="@+id/cb_confirm"-->
+                <!--android:checked="false" />-->
                 </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_weight="0.2"
-            android:layout_height="match_parent"
-            android:gravity="top|center|right"
-            android:layout_marginRight="15dp">
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:button="@drawable/checkbox_background"
-                android:focusable="false"
-                android:id="@+id/cb_confirm"
-                android:checked="false" />
-        </LinearLayout>
+        <!--android:layout_marginBottom="-50dip"-->
+        <!-- TOOLBAR -->
 
     </LinearLayout>
-    <!--android:layout_marginBottom="-50dip"-->
-    <!-- TOOLBAR -->
-
-</LinearLayout>

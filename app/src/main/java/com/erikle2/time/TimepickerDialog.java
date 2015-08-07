@@ -1,17 +1,24 @@
 package com.erikle2.time;
+
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.erikle2.main.R;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.util.Calendar;
 
@@ -29,6 +36,12 @@ public class TimepickerDialog extends TimeRangePickerDialog {
     boolean is24HourMode;
     public static final String TIMERANGEPICKER_TAG = "timerangepicker";
 
+    private int position;
+    private ListView list;
+    onViewUpdate viewUpdate;
+
+    public  TimepickerDialog(){
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,7 +58,6 @@ public class TimepickerDialog extends TimeRangePickerDialog {
         startTimePicker = (TimePicker) root.findViewById(me.tittojose.www.timerangepicker_library.R.id.startTimePicker);
         endTimePicker = (TimePicker) root.findViewById(me.tittojose.www.timerangepicker_library.R.id.endTimePicker);
         setTimeRange.setOnClickListener(this);
-
 
 
 //        tabs.findViewById(me.tittojose.www.timerangepicker_library.R.id.tabHost);
@@ -77,12 +89,12 @@ public class TimepickerDialog extends TimeRangePickerDialog {
 //        setTabColor(tabs);
 
         TabWidget widget = tabs.getTabWidget();
-        for(int i = 0; i < widget.getChildCount(); i++) {
+        for (int i = 0; i < widget.getChildCount(); i++) {
             View v = widget.getChildAt(i);
 
             // Look for the title view to ensure this is an indicator and not a divider.
-            TextView tv = (TextView)v.findViewById(android.R.id.title);
-            if(tv == null) {
+            TextView tv = (TextView) v.findViewById(android.R.id.title);
+            if (tv == null) {
                 continue;
             }
             v.setBackgroundResource(R.drawable.tab_selector);
@@ -107,18 +119,52 @@ public class TimepickerDialog extends TimeRangePickerDialog {
     public void onClick(View v) {
 //        super.onClick(v);
         dismiss();
-        if(v.getId() == R.id.bSelectTimeRangeFragment){
+        if (v.getId() == R.id.bSetTimeRange) {
             int starthour = startTimePicker.getCurrentHour();
             int startmin = startTimePicker.getCurrentMinute();
             int endHour = endTimePicker.getCurrentHour();
             int endMin = endTimePicker.getCurrentMinute();
-            onTimeRangeSelectedListener.onTimeRangeSelected(starthour,startmin,endHour,endMin);
+
+            viewUpdate.updateView(position,starthour, startmin, endHour, endMin);
+//            onTimeRangeSelectedListener.onTimeRangeSelected(starthour, startmin, endHour, endMin);
+
+//            ParseObject gameScore = new ParseObject("time");
+//            gameScore.put("startTime", starthour + ":" + startmin);
+//            gameScore.put("endTime", endHour + ":" + endMin);
+//            gameScore.put("user", ParseUser.getCurrentUser());
+//            gameScore.saveInBackground();
+
+
         }
     }
 
-    public static TimepickerDialog newInstance(OnTimeRangeSelectedListener callback, boolean is24HourMode) {
+    public void setAdapter(ListView list) {
+        this.list = list;
+    }
+
+    public void setPosition(int pos) {
+        this.position = pos;
+    }
+
+    @Override
+    public void initialize(OnTimeRangeSelectedListener callback, boolean is24HourMode) {
+        super.initialize(callback, is24HourMode);
+        this.onTimeRangeSelectedListener = callback;
+    }
+    public interface onViewUpdate{
+         void updateView(int position, int i, int i1, int i2, int i3);
+    }
+
+    public void setOnViewUpdate(onViewUpdate callback2){
+        this.viewUpdate = callback2;
+    }
+
+    public static TimepickerDialog newInstance(OnTimeRangeSelectedListener callback, onViewUpdate callback2, boolean is24HourMode, int pos, ListView list) {
         TimepickerDialog ret = new TimepickerDialog();
         ret.initialize(callback, is24HourMode);
+        ret.setAdapter(list);
+        ret.setPosition(pos);
+        ret.setOnViewUpdate(callback2);
         return ret;
     }
 

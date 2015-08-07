@@ -9,8 +9,8 @@
   <color name="icons">#212121</color>
   <color name="divider">#B6B6B6</color>
   <color name="bars">#FFA000</color>
-  <color name="check">#007700</color>
-  <color name="unchecked">#770000</color>
+  <color name="check">#30007700</color>
+  <color name="unchecked">#30770000</color>
   <color name="event">#50770000</color>
   <color name="info">#50000077</color>
   <color name="white">#FFFFFF</color>
