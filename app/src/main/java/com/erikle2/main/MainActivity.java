@@ -24,6 +24,7 @@ import com.parse.ParseQuery;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -68,16 +69,18 @@ public class MainActivity extends ActionBarActivity
 
     /**
      * Decides with fragment to view on selection
+     *
      * @param position
      */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        FragmentHandler.getFragment( getSupportFragmentManager(),position);
+        FragmentHandler.getFragment(getSupportFragmentManager(), position);
         onSectionAttached(position);
     }
 
     /**
      * Sets the title of the actionbar
+     *
      * @param number
      */
     public void onSectionAttached(int number) {
@@ -86,14 +89,9 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getResources().getString(R.string.title_section1);
                 break;
             case 1:
-                Connection c = new Connection();
-               JSONObject j=  c.getTimes();
-                try{
-                    mTitle = "Vecka " + j.get("weeknr");
-                }catch (JSONException e){
-                    e.printStackTrace();
-                    mTitle = getResources().getString(R.string.title_section2);
-                }
+                Calendar now = Calendar.getInstance();
+                int currentWeek = now.get(Calendar.WEEK_OF_YEAR);
+                mTitle = "Vecka " + currentWeek;
 
                 break;
             case 2:

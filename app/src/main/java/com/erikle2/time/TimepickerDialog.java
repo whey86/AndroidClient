@@ -58,8 +58,18 @@ public class TimepickerDialog extends TimeRangePickerDialog {
         setTimeRange.setTextColor(getActivity().getResources().getColor(R.color.white));
         startTimePicker = (TimePicker) root.findViewById(me.tittojose.www.timerangepicker_library.R.id.startTimePicker);
         endTimePicker = (TimePicker) root.findViewById(me.tittojose.www.timerangepicker_library.R.id.endTimePicker);
+
         setTimeRange.setOnClickListener(this);
 
+
+        LinearLayout ll_main = (LinearLayout)setTimeRange.getParent();
+
+        Button btnCanel = new Button(getActivity());
+        btnCanel.setId(R.id.btn_cancel);
+        btnCanel.setText("Rensa");
+
+        btnCanel.setOnClickListener(this);
+        ll_main.addView(btnCanel);
 
 //        tabs.findViewById(me.tittojose.www.timerangepicker_library.R.id.tabHost);
 
@@ -67,11 +77,11 @@ public class TimepickerDialog extends TimeRangePickerDialog {
         tabs.setup();
         TabHost.TabSpec tabpage1 = tabs.newTabSpec("one");
         tabpage1.setContent(me.tittojose.www.timerangepicker_library.R.id.startTimeGroup);
-        tabpage1.setIndicator(getActivity().getResources().getString(R.string.get));
+        tabpage1.setIndicator(getActivity().getResources().getString(R.string.leave));
 
         TabHost.TabSpec tabpage2 = tabs.newTabSpec("two");
         tabpage2.setContent(me.tittojose.www.timerangepicker_library.R.id.endTimeGroup);
-        tabpage2.setIndicator(getActivity().getResources().getString(R.string.leave));
+        tabpage2.setIndicator(getActivity().getResources().getString(R.string.get));
 
         tabs.addTab(tabpage1);
         tabs.addTab(tabpage2);
@@ -101,6 +111,7 @@ public class TimepickerDialog extends TimeRangePickerDialog {
             v.setBackgroundResource(R.drawable.tab_selector);
         }
 
+
         return root;
     }
     //Change The Backgournd Color of Tabs
@@ -119,33 +130,19 @@ public class TimepickerDialog extends TimeRangePickerDialog {
     @Override
     public void onClick(View v) {
 //        super.onClick(v);
-        dismiss();
+
         if (v.getId() == R.id.bSetTimeRange) {
             int starthour = startTimePicker.getCurrentHour();
             int startmin = startTimePicker.getCurrentMinute();
             int endHour = endTimePicker.getCurrentHour();
             int endMin = endTimePicker.getCurrentMinute();
 
-            viewUpdate.updateView(position,starthour, startmin, endHour, endMin);
-
-            Time t = new Time();
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.DAY_OF_WEEK, WEEKDAYS[1]);
-            t.setDate(c.getTime());
-            t.setStartTime("" + ":ANUS" + "");
-            t.setEndTime("" + ":" + "");
-            t.timeConfirmed();
-            mAdapter.add(t);
-//            onTimeRangeSelectedListener.onTimeRangeSelected(starthour, startmin, endHour, endMin);
-
-//            ParseObject gameScore = new ParseObject("time");
-//            gameScore.put("startTime", starthour + ":" + startmin);
-//            gameScore.put("endTime", endHour + ":" + endMin);
-//            gameScore.put("user", ParseUser.getCurrentUser());
-//            gameScore.saveInBackground();
-
-
+            viewUpdate.updateView(position, starthour, startmin, endHour, endMin);
         }
+        if (v.getId() == R.id.btn_cancel) {
+            viewUpdate.updateView(position, -1, 0, 0, 0);
+        }
+        dismiss();
     }
 
     public void setAdapter(TimeListAdapter list) {
@@ -169,11 +166,11 @@ public class TimepickerDialog extends TimeRangePickerDialog {
         this.viewUpdate = callback2;
     }
 
-    public static TimepickerDialog newInstance(OnTimeRangeSelectedListener callback, onViewUpdate callback2, boolean is24HourMode) {
+    public static TimepickerDialog newInstance(OnTimeRangeSelectedListener callback, onViewUpdate callback2, boolean is24HourMode, int pos) {
         TimepickerDialog ret = new TimepickerDialog();
         ret.initialize(callback, is24HourMode);
 //        ret.setAdapter(adapter);
-//        ret.setPosition(pos);
+        ret.setPosition(pos);
         ret.setOnViewUpdate(callback2);
         return ret;
     }

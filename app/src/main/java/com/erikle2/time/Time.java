@@ -10,10 +10,12 @@ import java.util.Date;
  */
 public class Time {
     private String startTime, endTime;
+    private int week;
     Date date;
     int background = R.color.unchecked;
     int color1 = R.color.unchecked;
     int color2 = R.color.check;
+    int day;
 
     public Date getDate() {
         return date;
@@ -48,5 +50,21 @@ public class Time {
     }
     public void timeConfirmed (){
         background = color2;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
     }
 }

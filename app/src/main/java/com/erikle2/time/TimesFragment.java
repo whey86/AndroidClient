@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.erikle2.main.R;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -39,6 +40,7 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
     Button btnPrevious;
     Button btnNext;
     ListView listViewTimes;
+    TimeListAdapter adapter;
     private int lastClick = -1;
     private final int[] WEEKDAYS = new int[]{Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY};
 
@@ -65,21 +67,21 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
 
             listViewTimes = (ListView) v.findViewById(R.id.lv_times);
 
-             final TimeListAdapter adapter = new TimeListAdapter(getActivity(), getActivity().getFragmentManager(), new ArrayList<Time>());
+            adapter = new TimeListAdapter(getActivity(), getActivity().getFragmentManager(), new ArrayList<Time>());
             listViewTimes.setAdapter(adapter);
-            initTimes(adapter);
+            initTimes();
 
 
-            //ListItem is clicked
+//            //ListItem is clicked
             listViewTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    TimepickerDialog timePickerDialog = TimepickerDialog.newInstance(TimesFragment.this, TimesFragment.this, true);
+//
+                    TimepickerDialog timePickerDialog = TimepickerDialog.newInstance(TimesFragment.this, TimesFragment.this, true, position);
 
                     timePickerDialog.show(getActivity().getSupportFragmentManager(), TIMERANGEPICKER_TAG);
+//
 
-                    TimepickerDialog.onViewUpdate()
                 }
             });
 
@@ -96,7 +98,7 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
         setRetainInstance(true);
     }
 
-    private void initTimes(TimeListAdapter adapter) {
+    private void initTimes() {
 //        JSONArray week = new JSONArray();
 //
 //        for(int i = 0; i<5;i++){
@@ -127,8 +129,8 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
 
         //
         Calendar now = Calendar.getInstance();
-        int currentWeek = now.get(Calendar.WEEK_OF_YEAR);
-
+        final int currentWeek = now.get(Calendar.WEEK_OF_YEAR);
+        Log.d("Currentweek", "" + currentWeek);
         //init arraylist with default data
         for (int j = 0; j < 5; j++) {
             Calendar c = Calendar.getInstance();
@@ -137,31 +139,48 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
             t.setStartTime("START");
             t.setEndTime("END");
             t.setDate(c.getTime());
+            t.setWeek(currentWeek);
             adapter.add(t);
         }
 
-        //Fetch times from backend to make sure user see the latest sent times
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("time");
-//        query.whereEqualTo("user", ParseUser.getCurrentUser());
-//        query.whereEqualTo("week", currentWeek);
-//
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            public void done(List<ParseObject> timeList, ParseException e) {
-//
-//
-//                for (ParseObject item : timeList) {
-//                    for (int i = 0; i < 5; i++) {
-//                        Date d = item.getDate("date");
-//                        if (d == mWeek.get(i).getDate()) {
-//                            mWeek.get(i).setDate(item.getDate("date"));
-//                            mWeek.get(i).setStartTime(item.getString("startTime"));
-//                            mWeek.get(i).setEndTime(item.getString("endTime"));
-//                        }
-//                    }
-//
-//                }
-//            }
-//        });
+        Calendar c1 = Calendar.getInstance();
+        c1.set(Calendar.DAY_OF_WEEK, WEEKDAYS[0]);
+        Date start = c1.getTime();
+        Calendar c2 = Calendar.getInstance();
+        c2.set(Calendar.DAY_OF_WEEK, WEEKDAYS[0]);
+        Date end = c2.getTime();
+//        Fetch times from backend to make sure user see the latest sent times
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("time");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereEqualTo("week", currentWeek);
+//        query.whereLessThanOrEqualTo("date", end);
+
+
+        Log.d("Parse", "Fetching time data" + "");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> timeList, ParseException e) {
+
+
+                for (ParseObject item : timeList) {
+                    Date d = item.getDate("date");
+                    Calendar c1 = Calendar.getInstance();
+                    c1.setTime(d);
+                    int weekday = c1.get(Calendar.DAY_OF_WEEK);
+
+
+                    Log.d("Parse", "Crruent week " + weekday);
+
+                    Time time = adapter.getItem(weekday-2);
+                    time.setStartTime(item.getString("startTime"));
+                    time.setEndTime(item.getString("endTime"));
+                    time.setDate(d);
+                    time.setWeek(currentWeek);
+                    time.timeConfirmed();
+
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -171,17 +190,77 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
     }
 
     @Override
-    public void updateView(int position, int i, int i1, int i2, int i3) {
-        Log.d("UPDATE VIEW", "HAHAHA POSITION " + position);
+    public void updateView(int position, int startHour, int startMin, int endHour, int endMin) {
 
-//        Time t = new Time();
-//        Calendar c = Calendar.getInstance();
-//        c.set(Calendar.DAY_OF_WEEK, WEEKDAYS[1]);
-//        t.setDate(c.getTime());
-//        t.setStartTime( + ":" + "");
-//        t.setEndTime("" + ":" + "");
-//        t.timeConfirmed();
-//        adapter.add(t);
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK, WEEKDAYS[position]);
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE, 0);
+
+
+
+
+        Time t = adapter.getItem(position);
+
+        t.setDate(c.getTime());
+        t.setStartTime(addZero(startHour) + ":" + addZero(startMin));
+        t.setEndTime(addZero(endHour) + ":" + addZero(endMin));
+        t.timeConfirmed();
+        t.setWeek(c.get(Calendar.WEEK_OF_YEAR));
+        t.setDay(position);
+
+        adapter.notifyDataSetChanged();
+
+        addTime(t,startHour,startMin,endHour,endMin,c,position);
+    }
+
+    private String addZero(int n) {
+        if (n < 10) {
+            return "0" + n;
+        } else return n + "";
+    }
+
+    private void addTime(final Time t,final int startHour,final int startMin,final int endHour,final int endMin,final Calendar c, final int pos){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("time");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+
+        Calendar cStart = c;
+        Calendar cEnd = c;
+        query.whereEqualTo("week", t.getWeek());
+        query.whereEqualTo("day",pos);
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null) {
+                    parseObject.put("startTime", t.getStartTime());
+                    parseObject.put("endTime", t.getEndTime());
+                    parseObject.saveInBackground();
+                } else {
+
+                    if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+                        ParseObject timeStamp = new ParseObject("time");
+                        timeStamp.put("startTime", addZero(startHour) + ":" + addZero(startMin));
+                        timeStamp.put("endTime", addZero(endHour) + ":" + addZero(endMin));
+                        timeStamp.put("user", ParseUser.getCurrentUser());
+                        timeStamp.put("date", c.getTime());
+                        timeStamp.put("week",c.get(Calendar.WEEK_OF_YEAR));
+                        timeStamp.put("day",pos);
+                        timeStamp.saveInBackground();
+                    } else {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
 
 
     }
