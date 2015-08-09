@@ -22,17 +22,19 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by Erik on 2015-08-05.
  */
-public class DetailFragment extends Fragment  {
+public class DetailFragment extends Fragment {
 
 
     private String type, location, time, title, text, author;
-    private String date,createdAt;
+    private String date, createdAt;
     private ArrayList<String> indicator;
 
+    private HashMap<String,String> ICON_LABELS = new ArrayList<>()
 
     public static DetailFragment newInstance(News data) {
 
@@ -44,8 +46,9 @@ public class DetailFragment extends Fragment  {
         args.putString("type", data.getType());
         args.putString("location", data.getLocation());
         args.putString("author", data.getAuthor());
-        args.putString("createdAt",data.getCreatedAt().toString().substring(0, 16));
-        args.putString("date",data.getDate().toString().substring(0,16));
+        args.putString("createdAt", data.getCreatedAt().toString().substring(0, 16));
+        args.putString("date", data.getDate().toString().substring(0, 16));
+        args.putStringArrayList("icons",data.getIndicator());
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,6 +68,7 @@ public class DetailFragment extends Fragment  {
             type = getArguments().getString("type");
             date = getArguments().getString("date");
             createdAt = getArguments().getString("createdAt");
+            indicator = getArguments().getStringArrayList("icons");
         }
     }
 
@@ -81,7 +85,9 @@ public class DetailFragment extends Fragment  {
         tvText.setText(text);
         field.addView(tvTitle);
 
-        if(type.equals("event")) {
+        if (type.equals("event")) {
+
+            LinearLayout eventInfo = (LinearLayout)field.findViewById(R.id.ll_event_info);
             // if location exist, add it to the view
             if (location != "") {
                 LinearLayout ll = new LinearLayout(getActivity());
@@ -96,7 +102,7 @@ public class DetailFragment extends Fragment  {
                 tvLocation.setTextColor(Color.BLACK);
 
                 ll.addView(tvLocation);
-                field.addView(ll);
+                eventInfo.addView(ll);
             }
 //     // if date exist, add it to the view
             if (date != null) {
@@ -112,7 +118,27 @@ public class DetailFragment extends Fragment  {
                 tvDate.setTextColor(Color.BLACK);
 
                 ll.addView(tvDate);
-                field.addView(ll);
+                eventInfo.addView(ll);
+            }
+
+
+//            Add notification icons
+            LinearLayout eventNotifications = (LinearLayout) field.findViewById(R.id.ll_event_notification);
+            for (String icon : indicator) {
+                LinearLayout icon_con = new LinearLayout(getActivity());
+                icon_con.setOrientation(LinearLayout.HORIZONTAL);
+                ImageView img = new ImageView(getActivity());
+                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                llp.setMargins(7, 0, 0, 0); // llp.setMargins(left, top, right, bottom);
+                llp.width = 35;
+                llp.height = 35;
+                img.setImageResource(NewsFeedAdapter.getImgResourceByName(icon));
+                img.setLayoutParams(llp);
+                icon_con.addView(img);
+
+                TextView label = new TextView(getActivity());
+                label.setText(ICON_LABELS[]);
+                eventNotifications.addView(img);
             }
         }
         field.addView(tvText);
@@ -120,20 +146,20 @@ public class DetailFragment extends Fragment  {
         //Container for author and createdAt
         LinearLayout ll_bottom = new LinearLayout(getActivity());
         ll_bottom.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-       lp.gravity = Gravity.BOTTOM;
-        lp.setMargins(0,10,0,10);
-       ll_bottom.setLayoutParams(lp);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.gravity = Gravity.BOTTOM;
+        lp.setMargins(0, 10, 0, 10);
+        ll_bottom.setLayoutParams(lp);
         TextView tvAuthor = new TextView(getActivity());
         TextView tvCreatedAt = new TextView(getActivity());
         tvAuthor.setText(author);
-        tvCreatedAt.setText(createdAt);
-        ll_bottom.addView(tvAuthor);
+        tvCreatedAt.setText("Reviderad " + createdAt +"\n");
+
         ll_bottom.addView(tvCreatedAt);
+        ll_bottom.addView(tvAuthor);
+
 
         field.addView(ll_bottom);
-
-        
 
 
         Button btn = (Button) v.findViewById(R.id.btn_back);

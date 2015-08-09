@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.erikle2.main.R;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -136,8 +137,8 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
             Calendar c = Calendar.getInstance();
             c.set(Calendar.DAY_OF_WEEK, WEEKDAYS[j]);
             Time t = new Time();
-            t.setStartTime("START");
-            t.setEndTime("END");
+            t.setStartTime(getActivity().getResources().getString(R.string.default_start));
+            t.setEndTime(getString(R.string.default_end));
             t.setDate(c.getTime());
             t.setWeek(currentWeek);
             adapter.add(t);
@@ -220,12 +221,43 @@ public class TimesFragment extends Fragment implements TimeRangePickerDialog.OnT
         } else return n + "";
     }
 
+    @Override
+    public void clearView(int position) {
+
+        Time t = adapter.getItem(position);
+        t.setStartTime(getActivity().getResources().getString(R.string.default_start));
+        t.setEndTime(getActivity().getResources().getString(R.string.default_end));
+        t.timeCancelled();
+        adapter.notifyDataSetChanged();
+
+        deleteTime(t,position);
+
+
+    }
+
+    private void deleteTime(Time t,int pos) {
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("time");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereEqualTo("week", t.getWeek());
+        query.whereEqualTo("day", pos);
+
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+
+                parseObject.deleteInBackground();
+            }
+        });
+
+
+
+
+    }
     private void addTime(final Time t,final int startHour,final int startMin,final int endHour,final int endMin,final Calendar c, final int pos){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("time");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
 
-        Calendar cStart = c;
-        Calendar cEnd = c;
         query.whereEqualTo("week", t.getWeek());
         query.whereEqualTo("day",pos);
         query.getFirstInBackground(new GetCallback<ParseObject>() {

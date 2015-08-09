@@ -5,22 +5,32 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:background="@color/primary"
+        android:background="@drawable/btn_back"
+        android:id="@+id/ll_news_details_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="@color/white"
             android:text="Tillbaka"
-            android:background="@drawable/button"
+            android:background="@android:color/transparent"
             android:id="@+id/btn_back" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></LinearLayout>
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView"
+        android:fillViewport="true"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:orientation="vertical"
@@ -28,7 +38,28 @@
             android:layout_height="wrap_content"
             android:id="@+id/ll_news_details"
             android:gravity="top"
-            android:layout_margin="10dp"></LinearLayout>
+            android:layout_margin="10dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/ll_event_info"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_event_notification"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"></LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

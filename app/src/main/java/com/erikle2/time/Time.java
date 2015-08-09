@@ -51,6 +51,7 @@ public class Time {
     public void timeConfirmed (){
         background = color2;
     }
+    public void timeCancelled(){background = color1;}
 
     public int getWeek() {
         return week;

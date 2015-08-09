@@ -151,7 +151,7 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
 
     }
 
-    private int getImgResourceByName(String posistion) {
+    public static int getImgResourceByName(String posistion) {
 
         switch (posistion) {
             case "0":

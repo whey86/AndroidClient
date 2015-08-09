@@ -11,6 +11,7 @@ import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -40,7 +41,8 @@ public class TimepickerDialog extends TimeRangePickerDialog {
     private int position;
     private TimeListAdapter mAdapter;
     onViewUpdate viewUpdate;
-
+    private static final int TIME_PICKER_INTERVAL=15;
+    boolean mIgnoreEvent=false;
     public  TimepickerDialog(){
     }
 
@@ -67,6 +69,7 @@ public class TimepickerDialog extends TimeRangePickerDialog {
         Button btnCanel = new Button(getActivity());
         btnCanel.setId(R.id.btn_cancel);
         btnCanel.setText("Rensa");
+        btnCanel.setBackgroundResource(R.color.primary_dark);
 
         btnCanel.setOnClickListener(this);
         ll_main.addView(btnCanel);
@@ -112,6 +115,8 @@ public class TimepickerDialog extends TimeRangePickerDialog {
         }
 
 
+
+
         return root;
     }
     //Change The Backgournd Color of Tabs
@@ -140,7 +145,7 @@ public class TimepickerDialog extends TimeRangePickerDialog {
             viewUpdate.updateView(position, starthour, startmin, endHour, endMin);
         }
         if (v.getId() == R.id.btn_cancel) {
-            viewUpdate.updateView(position, -1, 0, 0, 0);
+            viewUpdate.clearView(position);
         }
         dismiss();
     }
@@ -160,6 +165,7 @@ public class TimepickerDialog extends TimeRangePickerDialog {
     }
     public interface onViewUpdate{
          void updateView(int position, int i, int i1, int i2, int i3);
+         void clearView(int position);
     }
 
     public void setOnViewUpdate(onViewUpdate callback2){

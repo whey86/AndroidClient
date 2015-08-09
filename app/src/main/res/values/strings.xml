@@ -20,6 +20,8 @@
     <string name="time_confirm">Bekräfta tider</string>
     <string name="leave">Lämnas</string>
     <string name="get">Hämtas</string>
+    <string name="default_start">X</string>
+    <string name="default_end">X</string>
 
     <!--Listview-->
     <array name="Days">

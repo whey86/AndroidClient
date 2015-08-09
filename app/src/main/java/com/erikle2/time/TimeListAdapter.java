@@ -77,8 +77,8 @@ public class TimeListAdapter extends ArrayAdapter<Time> {
             View rowView = inflater.inflate(R.layout.list_layout_times, parent, false);
 
             // Ref to the views
-            ImageView img = (ImageView) rowView.findViewById(R.id.list_icon);
-            img.setImageResource(R.drawable.expand_more);
+//            ImageView img = (ImageView) rowView.findViewById(R.id.list_icon);
+//            img.setImageResource(R.drawable.expand_more);
             TextView day = (TextView) rowView.findViewById(R.id.tv_day);
             TextView leave = (TextView) rowView.findViewById(R.id.tv_time);
             TextView get = (TextView) rowView.findViewById(R.id.tv_time2);
@@ -118,8 +118,8 @@ public class TimeListAdapter extends ArrayAdapter<Time> {
             View rowView = convertView;
 
             // Ref to the views
-            ImageView img = (ImageView) rowView.findViewById(R.id.list_icon);
-            img.setImageResource(R.drawable.expand_more);
+//            ImageView img = (ImageView) rowView.findViewById(R.id.list_icon);
+//            img.setImageResource(R.drawable.expand_more);
             TextView day = (TextView) rowView.findViewById(R.id.tv_day);
             TextView leave = (TextView) rowView.findViewById(R.id.tv_time);
             TextView get = (TextView) rowView.findViewById(R.id.tv_time2);
