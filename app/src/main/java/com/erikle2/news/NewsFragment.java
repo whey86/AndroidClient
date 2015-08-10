@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.erikle2.main.BackHandlerFragment;
 import com.erikle2.main.R;
 import com.erikle2.network.Connection;
 import com.erikle2.parser.PostHandler;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
  * Use the {@link NewsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment{
 
 
     private ListView newsfeed;
@@ -59,84 +60,48 @@ public class NewsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_news, container, false);
-        newsfeed = (ListView) v.findViewById(R.id.lv_news);
-        final NewsFeedAdapter adapter = new NewsFeedAdapter(getActivity().getApplicationContext(), new ArrayList<News>());
-        newsfeed.setAdapter(adapter);
+//        if (savedInstanceState == null) {
+            LinearLayout v = (LinearLayout) inflater.inflate(R.layout.fragment_news, container, false);
+            newsfeed = (ListView) v.findViewById(R.id.lv_news);
+            final NewsFeedAdapter adapter = new NewsFeedAdapter(getActivity().getApplicationContext(), new ArrayList<News>());
+            newsfeed.setAdapter(adapter);
 
-        //Fetch initial news data
-       final PostHandler ph = new PostHandler();
-        ph.getNewPosts((NewsFeedAdapter) newsfeed.getAdapter());
+            //Fetch initial news data
+            final PostHandler ph = new PostHandler();
+            ph.getNewPosts((NewsFeedAdapter) newsfeed.getAdapter());
 
-        //TODO: Check if methods works for big data
-        //Button to fetch more posts
-        Button more = (Button)v.findViewById(R.id.btn_more);
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ph.getMorePosts(adapter);
-            }
-        });
-        newsfeed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentManager fm =  getActivity().getSupportFragmentManager();
+            //TODO: Check if methods works for big data
+            //Button to fetch more posts
+            Button more = (Button) v.findViewById(R.id.btn_more);
+            more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ph.getMorePosts(adapter);
+                }
+            });
+            newsfeed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
 
-                Fragment f = DetailFragment.newInstance((News)newsfeed.getAdapter().getItem(position));
-                FragmentTransaction ft = fm.beginTransaction()
-                        .replace(R.id.container, f);
+                    Fragment f = DetailFragment.newInstance((News) newsfeed.getAdapter().getItem(position));
+                    FragmentTransaction ft = fm.beginTransaction()
+                            .replace(R.id.container, f);
 
-                ft.commit();
-            }
-        });
-
-
-
-        return v;
-//        return inflater.inflate(R.layout.fragment_news, container, false);
-    }
-//
-//    private News[] createNewsArray() {
-//        News[] mNews = null;
-//        JSONObject newsData = new Connection().getNews();
-//
-//        try {
-//            JSONArray jo = newsData.getJSONArray("newsfeed");
-//            mNews = new News[jo.length()];
-//            for (int i = 0; i < jo.length(); i++) {
-//                News newsObj = new News();
-//                JSONObject jNews = (JSONObject)jo.get(i);
-//                newsObj.setTitle((String) jNews.get("title"));
-//                newsObj.setLocation((String) jNews.get("location"));
-//                newsObj.setType((String) jNews.get("type"));
-////                newsObj.setText((String) jNews.get("text"));
-////                newsObj.setTime((String) jNews.get("time"));
-//                JSONArray iJa = jNews.getJSONArray("icons");
-//                int [] array = new int[iJa.length()];
-//                for(int j = 0; j<iJa.length(); j++){
-//                    array[j] =(int) iJa.get(j);
-//                }
-//                newsObj.setIndicator(array);
-//                mNews[i] = newsObj;
-//                Log.d("test", "test");
-//            }
-//
-//        } catch (JSONException e) {
-//            Log.d("Parsing exception","stop");
-//                e.printStackTrace();
-//        } finally {
-//
-//
+                    ft.commit();
+                }
+            });
+            return v;
+//        }else{
+//            return ;
 //        }
-//        Log.d("JSON", "news not returned");
-//        return mNews;
-//    }
 
-
+    }
 }

@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/lv_times"
         android:layout_margin="30dp"
-        android:divider="@android:color/transparent"
+        android:divider="@android:color/white"
         android:dividerHeight="10sp"/>
 
 

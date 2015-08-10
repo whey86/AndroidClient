@@ -23,18 +23,18 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Erik on 2015-08-05.
  */
 public class DetailFragment extends Fragment {
-
-
     private String type, location, time, title, text, author;
     private String date, createdAt;
-    private ArrayList<String> indicator;
+    private ArrayList<String> notifications;
+//    private static  final String [] ICON_LABELS = new String[]{R.array.Notifications[0]," Regnkläder"," Deadline"};
 
-    private HashMap<String,String> ICON_LABELS = new ArrayList<>()
+
 
     public static DetailFragment newInstance(News data) {
 
@@ -68,7 +68,7 @@ public class DetailFragment extends Fragment {
             type = getArguments().getString("type");
             date = getArguments().getString("date");
             createdAt = getArguments().getString("createdAt");
-            indicator = getArguments().getStringArrayList("icons");
+            notifications = getArguments().getStringArrayList("icons");
         }
     }
 
@@ -122,9 +122,10 @@ public class DetailFragment extends Fragment {
             }
 
 
+
 //            Add notification icons
             LinearLayout eventNotifications = (LinearLayout) field.findViewById(R.id.ll_event_notification);
-            for (String icon : indicator) {
+            for (String icon : notifications) {
                 LinearLayout icon_con = new LinearLayout(getActivity());
                 icon_con.setOrientation(LinearLayout.HORIZONTAL);
                 ImageView img = new ImageView(getActivity());
@@ -137,8 +138,9 @@ public class DetailFragment extends Fragment {
                 icon_con.addView(img);
 
                 TextView label = new TextView(getActivity());
-                label.setText(ICON_LABELS[]);
-                eventNotifications.addView(img);
+                label.setText(getActivity().getResources().getStringArray(R.array.Notifications)[Integer.parseInt(icon)]);
+                icon_con.addView(label);
+                eventNotifications.addView(icon_con);
             }
         }
         field.addView(tvText);
